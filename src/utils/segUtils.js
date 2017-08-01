@@ -1,6 +1,4 @@
-function changeType(prevObj, obj, type) {
-  console.log('changeType');
-  console.dir(obj);
+export function changeType(prevObj, obj, type) {
   if (obj.type == type) {
     return obj;
   }
@@ -8,18 +6,14 @@ function changeType(prevObj, obj, type) {
   newObj.type = type;
   switch (type) {
     case 'C':
-      if (!obj.ctx) {
-        newObj.ctx = parseInt(prevObj.x + (obj.x - prevObj.x) / 3);
-        newObj.cty = parseInt(prevObj.y + (obj.y - prevObj.y) / 3);
-      }
+      newObj.ctx = parseInt(prevObj.x + (obj.x - prevObj.x) / 3);
+      newObj.cty = parseInt(prevObj.y + (obj.y - prevObj.y) / 3);
       newObj.ct2x = parseInt(prevObj.x + (obj.x - prevObj.x) / 3 * 2);
       newObj.ct2y = parseInt(prevObj.y + (obj.y - prevObj.y) / 3 * 2);
       break;
     case 'Q':
-      if (!obj.ctx) {
-        newObj.ctx = parseInt(prevObj.x + (obj.x - prevObj.x) / 2);
-        newObj.cty = parseInt(prevObj.y + (obj.y - prevObj.y) / 2);
-      }
+      newObj.ctx = parseInt(prevObj.x + (obj.x - prevObj.x) / 2);
+      newObj.cty = parseInt(prevObj.y + (obj.y - prevObj.y) / 2);
       if (obj.ct2x) {
         delete newObj.ct2x;
         delete newObj.ct2y;
@@ -38,13 +32,11 @@ function changeType(prevObj, obj, type) {
     default:
       break;
   }
-  console.dir(newObj);
   return newObj;
   // Todo: We are mutating the 'obj' object. We need to rewrite it, so that it return a new object.
 }
 
 function insertMicro(list, index) {
-  console.log("insertMicro");
   const obj = list[index];
   const newObj = {
     type: 'L',
@@ -65,7 +57,6 @@ function deleteMicro(list, index) {
 }
 
 function modifyItem(list, index, type) {
-  console.log("modifyItem");
   switch (type) {
     case 'C':
     case 'Q':

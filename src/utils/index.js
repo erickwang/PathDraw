@@ -362,12 +362,9 @@ export function objToData(d) {
 }
 
 export function translate(d, tx, ty) {
-  console.log(tx, ty, d.length);
-  console.dir(d)
   let list = [];
   for (let i = 0; i < d.length; i++) {
     const obj = Object.assign({}, d[i]);
-    console.dir(obj);
     switch (obj.type) {
       case 'M':
       case 'L':
@@ -391,16 +388,13 @@ export function translate(d, tx, ty) {
     }
     list.push(obj);
   }
-  console.dir(list);
   return list;
 }
 
 export function resize(d, ox, oy, sx, sy) {
   let list = [];
-  console.log(ox, oy, sx, sy);
   for (let i = 0; i < d.length; i++) {
     const obj = Object.assign({}, d[i]);
-    console.dir(obj);
     switch (obj.type) {
       case 'M':
       case 'L':

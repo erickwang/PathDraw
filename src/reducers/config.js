@@ -54,14 +54,12 @@ export default function config(state = initialState, action) {
           zoom = 1;
           break;
       }
-      console.log(`new zoom = ${zoom}`);
       return { ...state, zoom };
     case 'OPEN_UNIT_POPUP':{
       const obj = { ...state.popups, editor: true };
       return { ...state, popups: obj };
     }
     case 'REMOVE':{
-      console.log('REMOVE');
       const obj = { ...state.popups, editor: false };
       return { ...state, popups: obj };
     }

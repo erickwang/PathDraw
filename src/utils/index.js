@@ -120,11 +120,10 @@ export function dataToNode(data) {
     if (obj.fill) {
     	addObj.fill = obj.fill;
     }
-    if(obj.showing){
-      obj.class = 'displayEditor';
-    }else{
-      obj.class = 'hideEditor';
+    if(!obj.visible){
+      addObj.display = 'none';
     }
+
     let id = obj.id;
     if (i) {
       id += `_${i}`;

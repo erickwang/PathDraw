@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Modal from './Modal';
-import { openUnitPopup, changeStackOrder, showSelected, hideSelected } from '../../actions';
+import { openUnitPopup, changeStackOrder, toggleVisibility } from '../../actions';
 
 let AllDraws = ({ allDraws, popups, dispatch }) => {
   if(!popups.allDraws){
@@ -19,28 +19,32 @@ let AllDraws = ({ allDraws, popups, dispatch }) => {
 
   const showDraw = (id) => {
       //console.log(`id = ${id}`);
-      dispatch(showSelected(id));
+      dispatch(toggleVisibility(id));
   };
 
   const hideDraw = (id) => {
       dispatch(hideSelected(id));
   };
 
+  const iconStyle = {
+    float: 'right',
+    fontSize: '1.3em'
+  }
+
   return (
     <Modal title="All Drawings " id="allDrawsPanel" isVisible={popups.allDraws} popupName={'allDraws'}>
       <ol id="unitDraw" onClick={onItemClick} >
         {
-              allDraws.list.map((item, i) => (i === allDraws.currentId)
-                  ? <li key={i} id={`draw~${i}`} className="selected" > {item.type} | {item.id}
-                      &nbsp;<i className="fa fa-eye" aria-hidden="true" onClick={e => showDraw(i)} title="Show" />
-                      <i className="fa fa-eye-slash" aria-hidden="true" onClick={e => hideDraw(i)} title="Hide" />
-                    </li>
-                  : <li key={i} id={`draw~${i}`} > {item.type} | {item.id}
-                      &nbsp;<i className="fa fa-eye" aria-hidden="true" onClick={e => showDraw(i)} title="Show" />
-                      <i className="fa fa-eye-slash" aria-hidden="true" onClick={e => hideDraw(i)} title="Hide" />
-                    </li>
-                  )
-            }
+          allDraws.list.map((item, i) => {
+            const className = (i === allDraws.currentId) ? 'selected' : '';
+            const iconClass = 'fa ' + (item.visible ? 'fa-eye' : 'fa-eye-slash');
+            return (
+                <li key={i} id={`draw~${i}`} className={className} > {item.type} | {item.id}
+                  {' '}<i className={iconClass} style = {iconStyle} aria-hidden="true" onClick={e =>dispatch(toggleVisibility(i))} />
+                </li>
+              )
+          })
+        }
       </ol>
       <div>
         <button className="btn btn-primary" onClick={e => dispatch(changeStackOrder(true))} id="upStackOrder" >

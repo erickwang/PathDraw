@@ -39,8 +39,6 @@ export function nodeToData(svgStr) {
         obj.y2 = node.getAttribute('y2');
         break;
     }
-    console.log(JSON.stringify(obj));
-    console.dir(obj);
     a = a.push(obj);
   }
 
@@ -154,7 +152,6 @@ export function dataToNode(data) {
     addObj.id = id;
     switch (type) {
       case 'line':
-        console.log('LLLLine');
         str = (<line
           x1={obj.x1}
           y1={obj.y1}
@@ -230,10 +227,7 @@ export function dataToNode(data) {
         a.push({...obj});
       }else{
         let list = dataToObj(obj.d);
-        console.log("obj.stepX", obj.stepX, obj.stepY);
-        console.dir(list);
         let newList = translate(list, obj.loopInfo.stepX * i , obj.loopInfo.stepY * i);
-        console.dir(newList);
         a.push({...obj, d:objToData(newList)})
       }
     }
@@ -259,7 +253,6 @@ export function dataToNode(data) {
       }
       a.push(arr);
     }
-    console.dir(a);
     return a;
   }
 
@@ -274,8 +267,8 @@ export function dataToNode(data) {
 
 export function dataToObj(str) {
   // let str = 'M 100 100 L 100 200 L 200 200 Q 100 250 200 300 L 300 300 L 300 400 L 400 400 C 400 300 450 300 450 450';
-  console.log(`dataToObj ${str}`);
   const reg = /[MLCQ][\-?0-9\s]+/g;
+  console.log('str =' + str+"=");
   const arr = [];
   while (true) {
     const val = reg.exec(str);
@@ -429,9 +422,10 @@ export function resize(d, ox, oy, sx, sy) {
 export function rotate(d, ox, oy, r) {
   r = r * Math.PI / 180 * -1;
   let list = [];
+  console.log("input");
+  console.dir(d);
   for (let i = 0; i < d.length; i++) {
     const obj = Object.assign({}, d[i]);
-    console.dir(obj);
     let dx,
       dy,
       x,
@@ -468,18 +462,27 @@ export function rotate(d, ox, oy, r) {
         y = oy + dy * Math.cos(r) - dx * Math.sin(r);
         obj.ct2x = parseInt(x);
         obj.ct2y = parseInt(y);
-
         break;
       case 'Q':
-      /*
-        obj.x = parseInt(ox + (obj.x - ox) * sx);
-        obj.ctx = parseInt(ox + (obj.ctx - ox) * sx);
-        obj.y = parseInt(oy + (obj.y - oy) * sy);
-        obj.cty = parseInt(oy + (obj.cty - oy) * sy);*/
+        dx = obj.x - ox;
+        dy = obj.y - oy;
+        x = ox + dx * Math.cos(r) + dy * Math.sin(r);
+        y = oy + dy * Math.cos(r) - dx * Math.sin(r);
+        obj.x = parseInt(x);
+        obj.y = parseInt(y);
+
+        dx = obj.ctx - ox;
+        dy = obj.cty - oy;
+        x = ox + dx * Math.cos(r) + dy * Math.sin(r);
+        y = oy + dy * Math.cos(r) - dx * Math.sin(r);
+        obj.ctx = parseInt(x);
+        obj.cty = parseInt(y);
         break;
     }
     list.push(obj);
   }
+  console.log("rotate:")
+  console.dir(list);
   return list;
 }
 
@@ -538,9 +541,6 @@ export function getSmoothPath(arr){
         }
         str += "C " + Math.round(firstCtrlX) + " " + Math.round(firstCtrlY) + " " + Math.round(secCtrlX) + " " + Math.round(secCtrlY) 
                     + " " + Math.round(arr[i+4]) + " " + Math.round(arr[i+5]) + " ";
-
-        console.log("str = " + str);
-
    };
 
     return str;
@@ -548,25 +548,17 @@ export function getSmoothPath(arr){
   function fillMorePts(arr) {
       var len = arr.length / 2;
       var xpos, ypos;
-      console.log("pos -- " + (len % 3));
       if (len % 3 != 1) {
           var lp = arr.length - 1;
           xpos = (arr[lp - 1] + arr[lp - 3]) / 2;
           ypos = (arr[lp] + arr[lp - 2]) / 2;
-          console.log("xpos = " + xpos + "," + ypos);
-          console.log("before : " + arr);
           arr.splice(lp - 1, 0, xpos, ypos);
-          console.log("after : " + arr);
       }
       if (len % 3 == 2) {
           var lp = arr.length - 1;
           xpos = (arr[lp - 1] + arr[lp - 3]) / 2;
           ypos = (arr[lp] + arr[lp - 2]) / 2;
-          console.log("xpos2 = " + arr[lp] + ":" + arr[lp - 2])
-          console.log("before : " + arr);
-          console.log("xpos2 = " + xpos + "," + ypos)
           arr.splice(lp - 1, 0, xpos, ypos);
-          console.log("after : " + arr);
       }
       return arr;
   }

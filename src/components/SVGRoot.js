@@ -151,7 +151,14 @@ class SVGRoot extends React.Component {
       }
     }
     const onMouseUp = (e) => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+
       const pt2 = utils.toData({x: e.clientX, y: e.clientY}, null, zoom);
+      console.log(Math.abs(pt2.x - pt.x) + "rethna" + Math.abs(pt2.y - pt.y));
+      if(Math.abs(pt2.x - pt.x) < 40 && Math.abs(pt2.y - pt.y) < 40){
+        return;
+      }
       if(insertType == 'path'){
         console.log("arr = " + arr);
         if(arr.length > 2 ){
@@ -163,8 +170,6 @@ class SVGRoot extends React.Component {
         this.props.dispatch(insert(insertType, pt.x, pt.y, pt2.x, pt2.y));
         utils.attr(this.tempContent, {display:'none'});
       }
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
     }
 
     document.addEventListener('mousemove', onMouseMove);

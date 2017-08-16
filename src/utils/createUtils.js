@@ -6,6 +6,10 @@ export function getRect(obj){
   height = Number(height);
   borderRadius = Number(borderRadius);
 
+  /*return (
+    `M ${x} ${y} L ${x+width} ${y} L ${x+width} ${y+height} L ${x} ${y+height} L ${x} ${y}`
+    )*/
+
   let d = 'M '+ (x + borderRadius) + ' ' + y ;
   d += ' L ' + (x + width - borderRadius) + ' ' + y;
   d += ' Q ' + (x + width) + ' ' + y + ' ' + (x + width) + ' ' + (y + borderRadius);
@@ -57,7 +61,7 @@ export function getCircle(obj){
 }
 
 export function getLine(obj){
-    return 'M ' + obj.x1 + ' ' + obj.y1 + ' L ' + obj.x2 + ' ' + obj.y2;
+    return 'M ' + obj.x1 + ' ' + obj.y1 + ' L ' + obj.x2 + ' ' + obj.y2 + ' ';
 }
 
 export function getArrow(obj){ 
@@ -66,13 +70,13 @@ export function getArrow(obj){
     let angle = Math.atan2(dy, dx);
     let arrLen = 10;
     let arrAng = 45 * Math.PI/180;
-    let x1 = Math.cos(angle + arrAng) * arrLen + obj.x2;
-    let y1 = Math.sin(angle + arrAng) * arrLen + obj.y2;
+    let x1 = Math.round(Math.cos(angle + arrAng) * arrLen + obj.x2);
+    let y1 = Math.round(Math.sin(angle + arrAng) * arrLen + obj.y2);
 
-    let x2 = Math.cos(angle - arrAng) * arrLen + obj.x2;
-    let y2 = Math.sin(angle - arrAng) * arrLen + obj.y2;
+    let x2 = Math.round(Math.cos(angle - arrAng) * arrLen + obj.x2);
+    let y2 = Math.round(Math.sin(angle - arrAng) * arrLen + obj.y2);
 
     let d = 'M ' + obj.x1 + ' ' + obj.y1 + ' L ' +  obj.x2 + ' ' + obj.y2 + ' ';
-    d += 'M ' + x1 + ' ' + y1 + ' L ' + obj.x2 + ' ' + obj.y2 + ' L ' + x2 + ' ' + y2;
+    d += 'M ' + x1 + ' ' + y1 + ' L ' + obj.x2 + ' ' + obj.y2 + ' L ' + x2 + ' ' + y2 + ' ';
     return d;
   }

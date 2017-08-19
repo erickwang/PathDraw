@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Modal from './Modal';
-import { openUnitPopup, changeStackOrder, toggleVisibility } from '../../actions';
+import { selectUnit, changeStackOrder, toggleVisibility } from '../../actions';
 
 let AllDraws = ({ allDraws, popups, dispatch }) => {
   if(!popups.allDraws){
@@ -12,13 +12,11 @@ let AllDraws = ({ allDraws, popups, dispatch }) => {
     let id = e.target.id;
     id = parseInt(id.substr(id.indexOf('~') + 1));
     if (!isNaN(id)) {
-      console.log(`id = ${id}`);
-      dispatch(openUnitPopup(id));
+      dispatch(selectUnit(id));
     }
   };
 
   const showDraw = (id) => {
-      //console.log(`id = ${id}`);
       dispatch(toggleVisibility(id));
   };
 

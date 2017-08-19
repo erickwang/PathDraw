@@ -11,8 +11,6 @@ class SvgControlsUI extends React.Component {
   isMoveDown = false;
   constructor(props){
     super(props);
-    console.log("SvgControlsUI");
-    console.dir(props);
     if(props.data){
       this.data = utils.dataToObj(props.data.d);
     }
@@ -25,7 +23,6 @@ class SvgControlsUI extends React.Component {
   }
 
   componentDidUpdate(){
-    console.log("componentDidUpdate~~~~");
     if(this.isMoveDown){
       return;
     }
@@ -57,10 +54,8 @@ class SvgControlsUI extends React.Component {
   }
 
   setHigherControls(){
-    console.log('setHigherControls');
     const {parentRef, zoom, segIndex} = this.props;
     const rectsvg = SVG.wrap(document.getElementById(this.props.data.id)).bbox();
-    console.dir(rectsvg);
     let pt = utils.toActual({x: rectsvg.x, y: rectsvg.y}, null, zoom);
     const rect = document.getElementById(this.props.data.id).getBoundingClientRect();
     //let [top, left, width, height] = [pt.y, pt.x, rectsvg.w * zoom, rectsvg.h * zoom]; //previous
@@ -85,6 +80,9 @@ class SvgControlsUI extends React.Component {
 
   setLowerControls(){
     const obj = this.data[this.props.segIndex];
+    if("VHAZ".indexOf(obj.type.toUpperCase()) !== -1){
+      return;
+    }
     let prevObj;
     if(this.props.segIndex != 0){
       prevObj = this.data[this.props.segIndex-1];
@@ -93,30 +91,38 @@ class SvgControlsUI extends React.Component {
     const {parentRef, zoom} = this.props;
 
     const pt = utils.toActual2({x: obj.x, y: obj.y}, parentRef, zoom);
-    console.dir(pt);
     utils.attr(this.pt, {cx:pt.x, cy:pt.y})
 
     this.pt.setAttribute("display", "block");
-
-    if(obj.type == 'Q' || obj.type == 'C' ){
-      const ctrlpt = utils.toActual2({x: obj.ctx, y: obj.cty}, parentRef, zoom);
-      utils.attr(this.ctrl1, {cx:ctrlpt.x, cy:ctrlpt.y, display:'block'});
-
-      const prevPt = utils.toActual2({x: prevObj.x, y: prevObj.y}, parentRef, zoom);
-
-      utils.attr(this.line1, {x1: prevPt.x, y1:prevPt.y, x2: ctrlpt.x, y2: ctrlpt.y, display:'block'})
-      if(obj.type == 'Q'){
-        utils.attr(this.line2, {x1: ctrlpt.x, y1:ctrlpt.y, x2: pt.x, y2: pt.y, display:'block'})
-      }else{
-        const ctrlpt2 = utils.toActual2({x: obj.ct2x, y: obj.ct2y}, parentRef, zoom);
-        utils.attr(this.ctrl2, {cx: ctrlpt2.x, cy: ctrlpt2.y, display: 'block'});
-        utils.attr(this.line2, {x1: ctrlpt2.x, y1:ctrlpt2.y, x2: pt.x, y2: pt.y, display: 'block'})
+    let ctrlPt;
+    if(obj.type == 'Q' || obj.type == 'S' || obj.type == 'C' ){
+      ctrlPt = utils.toActual2({x: obj.ctx, y: obj.cty}, parentRef, zoom);
+      utils.attr(this.ctrl1, {cx:ctrlPt.x, cy:ctrlPt.y, display:'block'});
+    }
+    switch(obj.type){
+      case 'Q':{
+        const prevPt = utils.toActual2({x: prevObj.x, y: prevObj.y}, parentRef, zoom);
+        utils.attr(this.line1, {x1: prevPt.x, y1:prevPt.y, x2: ctrlPt.x, y2: ctrlPt.y, display:'block'})
+        utils.attr(this.line2, {x1: ctrlPt.x, y1:ctrlPt.y, x2: pt.x, y2: pt.y, display:'block'})
+        break;
       }
+      case 'S':{
+        utils.attr(this.line1, {x1: ctrlPt.x, y1:ctrlPt.y, x2: pt.x, y2: pt.y, display:'block'})
+        break;
+      }
+      case 'C':{
+        const prevPt = utils.toActual2({x: prevObj.x, y: prevObj.y}, parentRef, zoom);
+        utils.attr(this.line1, {x1: prevPt.x, y1:prevPt.y, x2: ctrlPt.x, y2: ctrlPt.y, display:'block'})
+        const ctrlPt2 = utils.toActual2({x: obj.ct2x, y: obj.ct2y}, parentRef, zoom);
+        utils.attr(this.ctrl2, {cx: ctrlPt2.x, cy: ctrlPt2.y, display: 'block'});
+        utils.attr(this.line2, {x1: ctrlPt2.x, y1:ctrlPt2.y, x2: pt.x, y2: pt.y, display: 'block'});
+        break;
+      }
+        
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("componentWillReceiveProps");
     return;
     
     /*
@@ -134,24 +140,21 @@ class SvgControlsUI extends React.Component {
   }
 
   onMouseDown = e => {
-    console.log('onMouseDown');
     this.current = e.target;
     this.box = document.querySelector("#rootSvg").getBoundingClientRect();
-    console.dir(this.box);
     this.isMoveDown = true;
     window.document.addEventListener("mousemove", this.onMouseMove);
     window.document.addEventListener("mouseup", this.onMouseUp);
   }
 
   onMouseMove = e => {
-    console.log('onMouseMove');
     this.current.setAttribute('cx', e.clientX - this.box.left);
     this.current.setAttribute('cy', e.clientY - this.box.top);
-    this.updatePoints();
+    this.updatePoints(e.target);
     this.props.dispatch(editItemMicro({...this.props.data, d: utils.objToData(this.data)}, this.props.index));
   }
 
-  updatePoints = () => {
+  updatePoints = (target) => {
     const {parentRef, zoom} = this.props;
     const dataPt = utils.toData2({
       x: this.pt.getAttribute("cx"), 
@@ -160,20 +163,25 @@ class SvgControlsUI extends React.Component {
 
     let obj = {...this.data[this.props.segIndex]};
     obj = {...obj, x: dataPt.x, y: dataPt.y }
-    console.dir(obj);
-
-    if (obj.type == 'C' || obj.type == 'Q') {
-      const ctrlPt1= utils.toData2({
+    let ctrlPt1;
+    if (obj.type == 'C' || obj.type == 'Q' || obj.type == 'S') {
+      ctrlPt1= utils.toData2({
         x: this.ctrl1.getAttribute("cx"), 
         y: this.ctrl1.getAttribute("cy")
       }, parentRef, zoom);
 
       obj = {...obj, ctx: ctrlPt1.x, cty: ctrlPt1.y}
-      
-      this.line1.setAttribute('x2', this.ctrl1.getAttribute("cx"));
-      this.line1.setAttribute('y2', this.ctrl1.getAttribute("cy"));
-      this.line2.setAttribute('x2', this.pt.getAttribute("cx"));
-      this.line2.setAttribute('y2', this.pt.getAttribute("cy"));
+      if(obj.type == 'S'){
+        this.line1.setAttribute('x1', this.ctrl1.getAttribute("cx"));
+        this.line1.setAttribute('y1', this.ctrl1.getAttribute("cy"));
+        this.line1.setAttribute('x2', this.pt.getAttribute("cx"));
+        this.line1.setAttribute('y2', this.pt.getAttribute("cy"));
+      }else{
+        this.line1.setAttribute('x2', this.ctrl1.getAttribute("cx"));
+        this.line1.setAttribute('y2', this.ctrl1.getAttribute("cy"));
+        this.line2.setAttribute('x2', this.pt.getAttribute("cx"));
+        this.line2.setAttribute('y2', this.pt.getAttribute("cy"));
+      }
     }
 
     if (obj.type == 'C') {
@@ -189,17 +197,31 @@ class SvgControlsUI extends React.Component {
       this.line2.setAttribute('y1', this.ctrl2.getAttribute("cy"));
 
       // logic to modify the neighbouring 'C' control point to move in a smooth way
-      if (false) {
-        if (this.current.id == "ctrl1") {
-          let prev = this.state.data.get(this.index - 1);
+      if (this.props.smoothCurve) {
+        if (target && target === this.ctrl1 && this.props.segIndex > 1) {
+          const prev = {...this.data[this.props.segIndex - 1]};
           if (prev && prev.type == 'C') {
             let diffX = prev.ct2x - prev.x;
             let diffY = prev.ct2y - prev.y;
-            prev.ct2x = parseInt(prev.x - (this.data.ctx - prev.x));
-            prev.ct2y = parseInt(prev.y - (this.data.cty - prev.y));
-            this.state.data.set(this.index - 1, prev);
+            const len = Math.sqrt(Math.pow(diffX,2) + Math.pow(diffY,2));
+            let angle = Math.atan2(obj.cty - prev.y, obj.ctx - prev.x);
+            prev.ct2x = parseInt(prev.x - (len * Math.cos(angle)));
+            prev.ct2y = parseInt(prev.y - (len * Math.sin(angle)));
+            this.data[this.props.segIndex - 1] = prev;
           }
-        }
+        }else if (target && target === this.ctrl2 && this.props.segIndex < this.data.length-1){
+          const next = {...this.data[this.props.segIndex + 1]};
+          if (next && next.type == 'C') {
+            let diffX = obj.x - next.ctx;
+            let diffY = obj.y - next.cty;
+            const len = Math.sqrt(Math.pow(diffX,2) + Math.pow(diffY,2));
+            let angle = Math.atan2(obj.y - obj.ct2y, obj.x - obj.ct2x) + Math.PI;
+            next.ctx = parseInt(obj.x - (len * Math.cos(angle)));
+            next.cty = parseInt(obj.y - (len * Math.sin(angle)));
+            this.data[this.props.segIndex + 1] = next;
+            
+          }
+        } 
       }
     }
     if (obj.type == 'Q') {
@@ -207,15 +229,12 @@ class SvgControlsUI extends React.Component {
       this.line2.setAttribute('y1', this.ctrl1.getAttribute("cy"));
     }
     this.data[this.props.segIndex] = obj;
-    console.dir(this.data);
-
     let dd = utils.objToData(this.data);
     document.getElementById(this.props.data.id).setAttribute("d", dd);
      //this.props.dispatch(editItem({...this.props.data, d: dd}, this.props.index)); 
   }
 
   onMouseUp = () => {
-    //console.log("mouseup");
     this.updatePoints();
 
     this.isMoveDown = false;
@@ -348,7 +367,8 @@ class SvgControlsUI extends React.Component {
 const mapStateToProps = ({allDraws, config}) => ({data:allDraws.present.list.get(allDraws.present.currentId), 
   index:allDraws.present.currentId,
   segIndex:allDraws.present.segIndex,
-  zoom:config.present.zoom
+  zoom:config.present.zoom,
+  smoothCurve: config.present.smoothCurve
 });
 
 SvgControlsUI = connect(mapStateToProps)(SvgControlsUI);

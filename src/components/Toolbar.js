@@ -5,7 +5,6 @@ import {ActionCreators} from 'redux-undo';
 
 let Toolbar = (props) => {
   let insertType;
-  console.dir(props);
   const dispatch = props.dispatch;
   return (
     <div className="toolsWrapper">

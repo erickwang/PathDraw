@@ -40,7 +40,6 @@ export function getEllipse(obj){
     d += ' C '+ (xm + ox)  + ' ' + y + ' ' + xe + ' ' + (ym - oy) + ' ' + xe + ' ' + ym;
     d += ' C '+ xe  + ' ' + (ym + oy) + ' ' + (xm + ox) + ' ' + ye + ' ' + xm + ' ' + ye;
     d += ' C '+ (xm - ox)  + ' ' + ye + ' ' + x + ' ' + (ym + oy) + ' ' + x + ' ' + ym;
-    console.log("d = " + d);
     return d;
     /*
     ctx.beginPath();

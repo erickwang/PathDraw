@@ -28,7 +28,7 @@ const defaultLoopInfo = {
 };
 
 let Editor = ({ data, index, dispatch, popups }) => {
-  if(!popups.editor){
+  if(!popups.editor || index === -1){
     return null;
   }
   const loopTypeChange = (e) => {

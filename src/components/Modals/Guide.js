@@ -2,59 +2,115 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Modal from './Modal';
+import { changeGuide, changeRules, toggleGuide } from '../../actions';
 
 let Guide = props => {
   if(!props.popups.guide){
     return null;
   }
+
+  let guideImageRef = null;
+  let xRef = null;
+  let yRef = null;
+  let widthRef = null;
+  let heightRef = null;
+  let hLineRef = null;
+  let vLineRef = null;
+  let guideToggleRef = null;
+  let rulerToggleRef = null;
+
+  const onGuideChange = e => {
+    if(e.target === guideImageRef){
+      props.dispatch(changeGuide("guideImg", e.target.value));
+    }else if(e.target === xRef){
+      props.dispatch(changeGuide("x", e.target.value));
+    }else if(e.target === yRef){
+      props.dispatch(changeGuide("y", e.target.value));
+    }else if(e.target === widthRef){
+      props.dispatch(changeGuide("width", e.target.value));
+    }else if(e.target === heightRef){
+      props.dispatch(changeGuide("height", e.target.value));
+    }
+  }
+
+  const onRulesChange = e => {
+    let value = e.target.value;
+    if(e.target === hLineRef){
+      props.dispatch(changeRules("hRules", e.target.value));
+    }else if(e.target ===vLineRef){
+      props.dispatch(changeRules("vRules", e.target.value));
+    }
+  }
+
+  const onToggle = e => {
+    if(e.target === guideToggleRef){
+      props.dispatch(toggleGuide('guide'));
+    }else if(e.target === rulerToggleRef){
+      props.dispatch(toggleGuide('ruler'));
+    }
+  }
+
+  const {guideImg, x, y, width, height} = props.guide;
+  const {hRules, vRules, showGuide, showRules} = props.guide;
   return (
       <Modal title="Guide" id="guidePanel" popupName={'guide'} >
-        <h1> Guide </h1>
-        {/*
-                  <div>
-                    <input type='file' id="guideImage" onChange = {this.onGuideChange}/>
-                  </div>
-                    <div className = "guideForm" >
-                    <div className="guideXY">
-                      <label>X:</label>
-                      <input className="form-control" type = "number" id = "x" value = {this.state.x} onChange = {this.onGuideChange}/>
-                      <label>Y:</label>
-                      <input className="form-control" type = "number" id = "y" value = {this.state.y} onChange = {this.onGuideChange}/>
-                  </div>
-                  <div className=" guideWidth" >
-                      <label >Width:</label>
-                      <input className="form-control " type = "number" id = "width" value = {this.state.width} onChange = {this.onGuideChange}/>
-                      <label>Height:</label>
-                      <input className="form-control" type = "number" id  = "height" value = {this.state.height} onChange = {this.onGuideChange}/>
-                    </div>
-                    </div>
+        <div>
+          <input type='text' className="form-control" value ={guideImg}
+            ref = {n => {guideImageRef = n}} onChange = {onGuideChange}/>
+        </div>
+          <div className = "guideForm" >
+          <div className="guideXY">
+            <label>X:</label>
+            <input className="form-control" type = "number" ref = {n => {xRef = n}}
+              value = {x} 
+              onChange = {onGuideChange}/>
+            <label>Y:</label>
+            <input className="form-control" type = "number" ref = {n => {yRef = n}} 
+              value = {y} 
+              onChange = {onGuideChange}/>
+        </div>
+        <div className=" guideWidth" >
+            <label >Width:</label>
+            <input className="form-control" type = "number" ref = {n => {widthRef = n}} 
+              value = {width} 
+              onChange = {onGuideChange}/>
+            <label>Height:</label>
+            <input className="form-control" type = "number" ref = {n => {heightRef = n}}
+              value = {height} 
+              onChange = {onGuideChange}/>
+          </div>
+          </div>
 
-                    <div >
-                      <label>Horizontal GuideLines : </label>
-                        <input className="form-control"  type = "text" id = "hLinesTxt" onChange = {this.editGuideLines} value = {this.state.hLines.join(',')} />
+          <div >
+            <label>Horizontal GuideLines : </label>
+              <input className="form-control"  type = "text" ref = {n => {hLineRef = n}}
+                onChange = {onRulesChange}
+                value = {hRules.join(',')} />
 
-                      <label  className="verti">Vertical GuideLines : </label>
-                        <input className="form-control "  type = "text" id = "vLinesTxt" onChange = {this.editGuideLines} value = {this.state.vLines.join(',')} />
-                  </div>
+            <label  className="verti">Vertical GuideLines : </label>
+              <input className="form-control "  type = "text" ref = {n => {vLineRef = n}}
+                onChange = {onRulesChange}
+                value = {vRules.join(',')} />
+        </div>
 
-                  <div className="check" >
-                  <input type = "checkbox" value = {this.showGuide} id = "guideVisible" onClick = {this.onGuideChange} />
-                    <label> Show Guide </label>
+        <div className="check" >
+        <input type = "checkbox" checked = {showGuide} ref = {n => {guideToggleRef = n}}
+          onChange = {onToggle} />
+          <label> Show Guide </label> 
 
-                    <input type = "checkbox" value = {this.showRuler} id = "toggleRuler" onClick = {this.changeProperties} />
-                    <label > Show Ruler </label>
+          <input type = "checkbox" checked = {showRules} ref = {n => {rulerToggleRef = n}}
+            onChange = {onToggle} />
+          <label > Show Ruler </label>
     </div>
-
-                */ }
       </Modal>
             )
 };
 
-const mapStateToProps = ({ config }) => {
-  console.log("guide");
-  console.dir(config.present);
-  console.dir(config.present.popups);
-  return ({ popups: config.present.popups });
+const mapStateToProps = ({ config, guide}) => {
+  return ({
+    popups: config.present.popups,
+    guide: guide.present
+  });
 }
 
 Guide = connect(mapStateToProps)(Guide);

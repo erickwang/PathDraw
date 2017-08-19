@@ -19,8 +19,6 @@ const insertNewTemplate = {
 };
 
 export default function allDraws(state = initialState, action) {
-  console.log('allDraws');
-  console.dir(action);
   switch (action.type) {
     case 'INSERT':
       const id = action.insertType + action.nextId;
@@ -71,7 +69,7 @@ export default function allDraws(state = initialState, action) {
           break;
         }
       }
-      const newState = { ...state, list: state.list.push(obj) , currentId: state.list.size };
+      const newState = { ...state, list: state.list.push(obj) , currentId: -1 };
       return newState;
     case 'REMOVE':
       if (action.isAll) {
@@ -81,13 +79,12 @@ export default function allDraws(state = initialState, action) {
       if(state.list.size == 1){
         currentId = -1;
       }else if(state.currentId == state.list.size - 1){
-        currentId = state.currentId - 1;
+        //currentId = state.currentId - 1;
       }
-      return { ...state, list: state.list.delete(state.currentId), currentId };
+      return { ...state, list: state.list.delete(state.currentId), currentId: -1 };
     case 'ZOOM':
       return state;
     case 'CHANGE_STACK_ORDER':
-      console.log(`action.isUp = ${action.isUp}`, state.currentId);
       if (action.isUp && state.currentId !== 0) {
         const item = state.list.get(state.currentId);
         const list = state.list.delete(state.currentId).insert(state.currentId - 1, item);
@@ -98,7 +95,7 @@ export default function allDraws(state = initialState, action) {
         return { ...state, list, currentId: state.currentId + 1 };
       }
       return state;
-    case 'OPEN_UNIT_POPUP':
+    case 'SELECT_UNIT':
       return { ...state, currentId: parseInt(action.index), segIndex: -1 };
     case 'CHANGE_STROKE':
       let data = state.list.get(state.currentId);
@@ -119,7 +116,6 @@ export default function allDraws(state = initialState, action) {
       let data = {...action.data}
       let str = data.type;
       str = 'get' + str.charAt(0).toUpperCase() + str.substr(1);
-      console.log("str = " + str);
       data.d = createUtils[str](data);
       return { ...state, list: state.list.set(action.index, data) };
     }

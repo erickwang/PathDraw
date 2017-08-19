@@ -44,7 +44,7 @@ function insertMicro(list, index) {
     y: obj.y + 30
   };
   //return list.insert(index, newObj);
-  list.splice(index, 0, newObj);
+  list.splice(index+1, 0, newObj);
   return list;
 }
 

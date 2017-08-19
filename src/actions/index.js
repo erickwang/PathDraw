@@ -59,9 +59,14 @@ export const setFill = value => ({
   value
 });
 
+export const setOtherConfigProps = (property, value) => ({
+  type: 'OTHER_CONFIG_PROPS',
+  property,
+  value
+});
 
-export const openUnitPopup = index => ({
-  type: 'OPEN_UNIT_POPUP',
+export const selectUnit = index => ({
+  type: 'SELECT_UNIT',
   index
 });
 
@@ -105,4 +110,21 @@ export const editSource = svgStr => ({
 export const toggleVisibility = index => ({
   type: 'TOGGLE_VISIBILITY',
   index
+});
+
+export const changeGuide = (property, value) => ({
+  type: 'CHANGE_GUIDE',
+  property,
+  value
+});
+
+export const changeRules = (ruleType, newVal) => ({
+  type: 'CHANGE_RULES',
+  ruleType,
+  newVal
+});
+
+export const toggleGuide = property => ({
+  type: 'TOGGLE_GUIDE',
+  property
 });

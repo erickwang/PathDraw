@@ -17,22 +17,18 @@ class Ruler extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('Ruler componentDidUpdate');
     this.drawScale();
     this.setZoom();
   }
 
   shouldComponentUpdate() {
-    console.log('Ruler shouldComponentUpdate');
     return true;
   }
 
   componentWillUpdate() {
-    console.log('Ruler componentWillUpdate');
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('Ruler componentWillReceiveProps');
     return true;
   }
 
@@ -113,10 +109,33 @@ class Ruler extends React.Component {
 
 
   render() {
+    const { vRules, hRules } = this.props.guide;
+    const { zoom, width, height } = this.props.config;
+    const xLimit = (window.innerWidth - width) / 2 + 10;
+    const yLimit = (window.innerHeight - height) / 2 + 10;
+
     return (
       <g id="guides">
-        <g id="vGuideLines" stroke="#00ff00" />
-        <g id="hGuideLines" stroke="#00ff00" />
+        <g id="vGuideLines" stroke="#00ff00" style={{pointerEvents:'none'}}>
+        {
+          vRules.map(value => {
+            const pos = (value * zoom) + xLimit;
+            return (
+              <line x1={pos} y1="0" x2={pos} y2={window.innerHeight} />
+            )
+          })
+        }
+        </g>
+        <g id="hGuideLines" stroke="#00ff00" style={{pointerEvents:'none'}}>
+        {
+          hRules.map(value => {
+            const pos = (value * zoom) + yLimit;
+            return (
+              <line x1="0" y1={pos} x2={window.innerWidth} y2={pos} />
+            )
+          })
+        }
+        </g>
         <rect id="rulerTop" x="0" y="0" width={window.innerWidth - 5} height="25" fill="#b2b2b3" stroke="none" />
         <rect id="rulerLeft" x="0" y="25" width="25" height={window.innerHeight - 20} fill="#b2b2b3" stroke="none" />
         <path d="" stroke="#777777" id="rulerLines" />
@@ -126,10 +145,8 @@ class Ruler extends React.Component {
 }
 
 
-const mapStateToProps = ({ config }) => {
-  console.log("config");
-  console.dir(config);
-  return ({ config: config.present });
+const mapStateToProps = ({ config, guide }) => {
+  return ({ config: config.present, guide: guide.present });
 }
 
 Ruler = connect(mapStateToProps)(Ruler);

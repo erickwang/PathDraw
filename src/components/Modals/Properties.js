@@ -3,11 +3,17 @@ import { CompactPicker } from 'react-color';
 import { connect } from 'react-redux';
 
 import Modal from './Modal';
-import { setDimension, setStroke, setStrokeWidth, setFill } from '../../actions';
+import { setDimension, setStroke, setStrokeWidth, setFill, setOtherConfigProps } from '../../actions';
 
 let Properties = ({ dispatch, ...props }) => {
   if(!props.popups.properties){
     return null;
+  }
+
+  const setSegSize = e => {
+    if(e.target.value >= 5 && e.target.value <= 40){
+      dispatch(setOtherConfigProps('segSize', e.target.value));
+    }
   }
   return (
     <Modal title="Properties" id="propertiesPanel" popupName={'properties'}>
@@ -48,6 +54,19 @@ let Properties = ({ dispatch, ...props }) => {
           style={{ display: 'inline-block' }}
           onChangeComplete={color => dispatch(setFill(color.hex))}
         />
+      </div>
+      <div>
+        <div>
+          <label> Seg Size : </label>
+          <input className="form-control" type="number"
+            value={props.segSize}
+            onChange={setSegSize} />
+        </div>
+        <div className="check">
+          <input type = "checkbox" checked = {props.smoothCurve}
+            onChange = {e => dispatch(setOtherConfigProps('smoothCurve', null))} />
+          <label > Smooth Curve </label>
+        </div>
       </div>
     </Modal>
   		);

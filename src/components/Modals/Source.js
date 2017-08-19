@@ -21,7 +21,6 @@ class Source extends React.Component {
 	      }
 	    }
 	    str += "</svg>";
-	    console.log(str);
 	    this.nodeRef.value = str;
 	}
 

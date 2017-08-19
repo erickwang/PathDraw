@@ -12,7 +12,9 @@ const initialState = {
         	properties: false,
         	source: false
   },
-  zoom: 1
+  zoom: 1,
+  segSize: 20,
+  smoothCurve: true
 };
 
 export default function config(state = initialState, action) {
@@ -31,12 +33,16 @@ export default function config(state = initialState, action) {
 	    	return { ...state, height: action.value };
 
     case 'CHANGE_STROKE':
-      console.log(`action.value = ${action.value}`);
       return { ...state, stroke: action.value };
     case 'CHANGE_STROKE_WIDTH':
       return { ...state, strokeWidth: action.value };
     case 'CHANGE_FILL':
       return { ...state, fill: action.value };
+    case 'OTHER_CONFIG_PROPS':
+      if(action.value){
+        return { ...state, [action.property]: action.value}
+      }
+      return { ...state, [action.property]: !state[action.property]}
     case 'SHOW_POPUP':{
       const obj = { ...state.popups, [action.popupName]: action.isShow };
       return { ...state, popups: obj };
@@ -55,7 +61,7 @@ export default function config(state = initialState, action) {
           break;
       }
       return { ...state, zoom };
-    case 'OPEN_UNIT_POPUP':{
+    case 'SELECT_UNIT':{
       const obj = { ...state.popups, editor: true };
       return { ...state, popups: obj };
     }

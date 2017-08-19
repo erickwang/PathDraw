@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import SvgControlsUI from './SvgControlsUI';
 import Ruler from './Ruler';
-import { insert, editItem} from '../actions';
+import { insert, editItem, selectUnit} from '../actions';
 import * as utils from '../utils';
 
 class SVGRoot extends React.Component {
@@ -14,7 +14,6 @@ class SVGRoot extends React.Component {
 
   constructor(props){
     super(props);
-    console.log("constructorconstructorconstructorconstructor");
   }
 
   componentDidMount() {
@@ -29,7 +28,6 @@ class SVGRoot extends React.Component {
 
   onMoveKeyDown = e => {
     let {currentId, segIndex} = this.props.allDraws;
-    console.log('onMoveKeyDown', currentId, segIndex, e.keyCode)
     if (currentId === -1 || segIndex !== -1) {
       return;
     }
@@ -65,6 +63,12 @@ class SVGRoot extends React.Component {
   }
 
   onMoveKeyUp = e => {
+    if(e.keyCode === 27) { //escape key
+      if(this.props.allDraws.currentId != -1){
+        this.props.dispatch(selectUnit(-1));
+      }
+      return;
+    }
     if (!this.isKeyDown) {
       return;
     }
@@ -106,17 +110,13 @@ class SVGRoot extends React.Component {
   }
 
   addNewItem = (e) => {
-    console.log("SVGRoot onMouseDown");
     if(e.ctrlKey){
       this.startPane(e);
       return;
     }
-    
-    const {zoom, insertType} = this.props.config;
+    const {zoom, insertType, segSize} = this.props.config;
     this.newOne = document.createElement('rect');
     let pt = utils.toData({x: e.clientX, y: e.clientY}, null, zoom);
-    console.log('zoom = ' + zoom);
-    const gap = 30;
     let fillTemp = false;
     let data;
     let arr = [];
@@ -132,12 +132,11 @@ class SVGRoot extends React.Component {
       const pt2 = utils.toData({x: e.clientX, y: e.clientY}, null, zoom);
       if(insertType == 'path'){
         const dist = Math.sqrt(Math.pow(pt.x-pt2.x, 2) + Math.pow(pt.y-pt2.y, 2));
-        console.log('dist = ' + dist);
         if(fillTemp){
           fillTemp = false;
           data = data.substr(0, data.lastIndexOf('L'));
         }
-        if(dist > gap){
+        if(dist > segSize){
           data += 'L ' + pt2.x + ' ' + pt2.y + ' ';
           arr.push(pt2.x, pt2.y)
           pt = {...pt2};
@@ -155,20 +154,20 @@ class SVGRoot extends React.Component {
       document.removeEventListener('mouseup', onMouseUp);
 
       const pt2 = utils.toData({x: e.clientX, y: e.clientY}, null, zoom);
-      console.log(Math.abs(pt2.x - pt.x) + "rethna" + Math.abs(pt2.y - pt.y));
-      if(Math.abs(pt2.x - pt.x) < 40 && Math.abs(pt2.y - pt.y) < 40){
-        return;
-      }
       if(insertType == 'path'){
-        console.log("arr = " + arr);
+        utils.attr(this.tempPath, {display:'none'});
         if(arr.length > 2 ){
-          let d = utils.getSmoothPath(arr);
-          this.props.dispatch(insert(insertType, d));
-          utils.attr(this.tempPath, {display:'none'});
+          if(this.tempPath.getTotalLength() > 40){
+            let d = utils.getSmoothPath(arr);
+            this.props.dispatch(insert(insertType, d));
+          }
         }
       }else{
-        this.props.dispatch(insert(insertType, pt.x, pt.y, pt2.x, pt2.y));
         utils.attr(this.tempContent, {display:'none'});
+        if(Math.abs(pt2.x - pt.x) < 40 && Math.abs(pt2.y - pt.y) < 40){
+          return;
+        }
+        this.props.dispatch(insert(insertType, pt.x, pt.y, pt2.x, pt2.y));
       }
     }
 
@@ -178,8 +177,8 @@ class SVGRoot extends React.Component {
 
   render(){
     const config = this.props.config;
+    const guide = this.props.guide;
     let contentSvg;
-    console.dir(this.props.allDraws);
     return (
       <svg id="rootSvg" width={window.innerWidth - 1} height={window.innerHeight - 20} strokeWidth="2" stroke="#c9c9ca" fill="none" >
         <svg
@@ -191,11 +190,11 @@ class SVGRoot extends React.Component {
           y={(window.innerHeight - config.height) / 2 + 10}
         >
           <rect onMouseDown = {this.addNewItem} width={config.width} height={config.height} x="0" y="0" fill="#ffffff" />
-          <g id="guide" stroke="red" strokeWidth="1" display='none'>
-
-            <image id="guideImage" x="0" y="0" width="600" height="480" />
+          <g id="guide" stroke="red" strokeWidth="1" display={(guide.showGuide===true)?'block':'none'} style = {{pointerEvents:'none'}}>
+            <image href = {guide.guideImg} x={guide.x} y={guide.y}
+              width={guide.width} height={guide.height} />
           </g>
-          <svg id="content" ref = {n => {this.content = n}} stroke="blue">
+          <svg id="content" ref = {n => {this.content = n}} stroke="blue" style={{pointerEvents: 'none'}}>
             {utils.dataToNode(this.props.allDraws.list)}
           </svg>
            <rect x1="0" y1="0" ref = {n => { this.tempContent = n}} width="0" height="0" stroke = "none" fill="#ffff00" fillOpacity= "0.3" />
@@ -210,7 +209,8 @@ class SVGRoot extends React.Component {
   
 };
 
-const mapStateToProps = ({ config, allDraws }) => ({ config:config.present, allDraws:allDraws.present });
+const mapStateToProps = ({ config, allDraws, guide }) => ({ config:config.present, allDraws:allDraws.present,
+  guide: guide.present });
 
 SVGRoot = connect(mapStateToProps)(SVGRoot);
 

@@ -60,7 +60,6 @@ export function dataToNode(data) {
     switch (item.loopType) {
       case 'loop':
         arr = constructArr(item);
-        console.dir(arr);
         return (
           <g>
             {
@@ -74,7 +73,6 @@ export function dataToNode(data) {
           <g>
             {
 		            arr.map((a) => {
-		              console.dir(a);
 		              return (
 		                a.map((o, i) => getUnit(item.type, o, i))
 		                );
@@ -99,7 +97,6 @@ export function dataToNode(data) {
           </g>
         );
       default:
-        console.dir();
         return getUnit(item.type, item);
 
     }
@@ -267,8 +264,7 @@ export function dataToNode(data) {
 
 export function dataToObj(str) {
   // let str = 'M 100 100 L 100 200 L 200 200 Q 100 250 200 300 L 300 300 L 300 400 L 400 400 C 400 300 450 300 450 450';
-  const reg = /[MLCQ][\-?0-9\s]+/g;
-  console.log('str =' + str+"=");
+  const reg = /[MLCQSTHVAZ][\-?0-9\s]+/ig;
   const arr = [];
   while (true) {
     const val = reg.exec(str);
@@ -282,7 +278,6 @@ export function dataToObj(str) {
   for (let i = 0; i < arr.length; i++) {
     const a = arr[i].split(' ');
     const obj = dataToObjUnit(arr[i]);
-    // console.dir(obj);
     if (obj) {
     	data.push(obj);
     }
@@ -295,9 +290,10 @@ export function dataToObjUnit(str) {
   str = str.replace(/\s+/, ' ');
   const a = str.split(' ');
   let obj;
-  switch (a[0]) {
+  switch (a[0].toUpperCase()) {
     case 'M':
     case 'L':
+    case 'T':
       obj = {
         type: a[0],
         x: parseInt(a[1]),
@@ -305,6 +301,16 @@ export function dataToObjUnit(str) {
       };
       if (a.length != 3 || obj.x == NaN || obj.y == NaN) {
         	return null;
+      }
+      break;
+    case 'H':
+    case 'V':
+      obj = {
+        type: a[0],
+        val: parseInt(a[1])
+      }
+      if (a.length != 2 || obj.val == NaN ) {
+          return null;
       }
       break;
     case 'C':
@@ -322,6 +328,7 @@ export function dataToObjUnit(str) {
       }
       break;
     case 'Q':
+    case 'S':
       obj = {
         type: a[0],
         ctx: parseInt(a[1]),
@@ -333,6 +340,13 @@ export function dataToObjUnit(str) {
         	return null;
       }
       break;
+    case 'Z':
+      obj = {
+        type: a[0]
+      }
+      if (a.length != 1){
+        return  null;
+      }
   }
   return obj;
 }
@@ -342,16 +356,25 @@ export function objToData(d) {
   let str = '';
   for (let i = 0; i < d.length; i++) {
     const obj = d[i];
-    switch (obj.type) {
+    switch (obj.type.toUpperCase()) {
       case 'M':
       case 'L':
+      case 'T':
         str += `${obj.type} ${obj.x} ${obj.y} `;
+        break;
+      case 'H':
+      case 'V':
+        str += `${obj.type} ${obj.val} `;
         break;
       case 'C':
         str += `${obj.type} ${obj.ctx} ${obj.cty} ${obj.ct2x} ${obj.ct2y} ${obj.x} ${obj.y} `;
         break;
       case 'Q':
+      case 'S':
         str += `${obj.type} ${obj.ctx} ${obj.cty} ${obj.x} ${obj.y} `;
+        break;
+      case 'Z':
+        str += `${obj.type} `;
         break;
     }
   }
@@ -395,10 +418,13 @@ export function resize(d, ox, oy, sx, sy) {
     switch (obj.type) {
       case 'M':
       case 'L':
+      case 'm':
+      case 'l':
         obj.x = parseInt(ox + (obj.x - ox) * sx);
         obj.y = parseInt(oy + (obj.y - oy) * sy);
         break;
       case 'C':
+      case 'c':
         obj.x = parseInt(ox + (obj.x - ox) * sx);
         obj.ctx = parseInt(ox + (obj.ctx - ox) * sx);
         obj.ct2x = parseInt(ox + (obj.ct2x - ox) * sx);
@@ -407,6 +433,7 @@ export function resize(d, ox, oy, sx, sy) {
         obj.ct2y = parseInt(oy + (obj.ct2y - oy) * sy);
         break;
       case 'Q':
+      case 'q':
         obj.x = parseInt(ox + (obj.x - ox) * sx);
         obj.ctx = parseInt(ox + (obj.ctx - ox) * sx);
         obj.y = parseInt(oy + (obj.y - oy) * sy);
@@ -422,8 +449,6 @@ export function resize(d, ox, oy, sx, sy) {
 export function rotate(d, ox, oy, r) {
   r = r * Math.PI / 180 * -1;
   let list = [];
-  console.log("input");
-  console.dir(d);
   for (let i = 0; i < d.length; i++) {
     const obj = Object.assign({}, d[i]);
     let dx,
@@ -433,6 +458,8 @@ export function rotate(d, ox, oy, r) {
     switch (obj.type) {
       case 'M':
       case 'L':
+      case 'm':
+      case 'l':
         dx = obj.x - ox;
         dy = obj.y - oy;
         x = ox + dx * Math.cos(r) + dy * Math.sin(r);
@@ -441,7 +468,7 @@ export function rotate(d, ox, oy, r) {
         obj.y = parseInt(y);
         break;
       case 'C':
-
+      case 'c':
         dx = obj.x - ox;
         dy = obj.y - oy;
         x = ox + dx * Math.cos(r) + dy * Math.sin(r);
@@ -464,6 +491,7 @@ export function rotate(d, ox, oy, r) {
         obj.ct2y = parseInt(y);
         break;
       case 'Q':
+      case 'q':
         dx = obj.x - ox;
         dy = obj.y - oy;
         x = ox + dx * Math.cos(r) + dy * Math.sin(r);
@@ -481,8 +509,6 @@ export function rotate(d, ox, oy, r) {
     }
     list.push(obj);
   }
-  console.log("rotate:")
-  console.dir(list);
   return list;
 }
 
@@ -539,8 +565,13 @@ export function getSmoothPath(arr){
             secCtrlX = arr[i+2];
             secCtrlY = arr[i+3];
         }
-        str += "C " + Math.round(firstCtrlX) + " " + Math.round(firstCtrlY) + " " + Math.round(secCtrlX) + " " + Math.round(secCtrlY) 
+        if(i === 2){
+          str += "C " + Math.round(firstCtrlX) + " " + Math.round(firstCtrlY) + " " + Math.round(secCtrlX) + " " + Math.round(secCtrlY) 
                     + " " + Math.round(arr[i+4]) + " " + Math.round(arr[i+5]) + " ";
+        }else{
+          str += `S ${Math.round(secCtrlX)} ${Math.round(secCtrlY)} ${Math.round(arr[i+4])} ${Math.round(arr[i+5])} `
+        }
+        
    };
 
     return str;
@@ -564,6 +595,36 @@ export function getSmoothPath(arr){
   }
 }
 
+//not working as expected
+export function getSmoothPath2(arr){
+  fillMorePts(arr);
+  var str = "M " + arr[0] + " " + arr[1] + " ";
+  str += `C ${arr[2]} ${arr[3]} ${arr[4]} ${arr[5]} ${arr[6]} ${arr[7]} `
+  var firstCtrlX = arr[2];
+  var firstCtrlY = arr[3];
+  var secCtrlX = 0;
+  var secCtrlY = 0;
+  var nextFirstX;
+  var nextFirstY;
+  for(var i = 8; i < arr.length; i+= 4){
+    str += `S ${arr[i]} ${arr[i+1]} ${arr[i+2]} ${arr[i+3]} `
+  }
+  return str;
+  function fillMorePts(arr) {
+      var len = arr.length / 2;
+      if(len <= 4){
+        return arr;
+      }
+      var xpos, ypos;
+      if (len % 2 == 1) {
+          var lp = arr.length - 1;
+          xpos = (arr[lp - 1] + arr[lp - 3]) / 2;
+          ypos = (arr[lp] + arr[lp - 2]) / 2;
+          arr.splice(lp - 1, 0, xpos, ypos);
+      }
+      return arr;
+  }
+}
   
 
 export function toData(pt, domRef, zoom) {

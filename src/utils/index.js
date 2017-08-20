@@ -21,7 +21,8 @@ export function nodeToData(svgStr) {
     }
     const obj = {
       type,
-      id
+      id,
+      visible: true
     };
     switch (type) {
       case 'path':
@@ -385,9 +386,10 @@ export function translate(d, tx, ty) {
   let list = [];
   for (let i = 0; i < d.length; i++) {
     const obj = Object.assign({}, d[i]);
-    switch (obj.type) {
+    switch (obj.type.toUpperCase()) {
       case 'M':
       case 'L':
+      case 'T':
         obj.x += tx;
         obj.y += ty;
         break;
@@ -400,10 +402,17 @@ export function translate(d, tx, ty) {
         obj.ct2y += ty;
         break;
       case 'Q':
+      case 'S':
         obj.x += tx;
         obj.ctx += tx;
         obj.y += ty;
         obj.cty += ty;
+        break;
+      case 'H':
+        obj.val += tx;
+        break;
+      case 'V':
+        obj.val += ty;
         break;
     }
     list.push(obj);
@@ -415,16 +424,14 @@ export function resize(d, ox, oy, sx, sy) {
   let list = [];
   for (let i = 0; i < d.length; i++) {
     const obj = Object.assign({}, d[i]);
-    switch (obj.type) {
+    switch (obj.type.toUpperCase()) {
       case 'M':
       case 'L':
-      case 'm':
-      case 'l':
+      case 'T':
         obj.x = parseInt(ox + (obj.x - ox) * sx);
         obj.y = parseInt(oy + (obj.y - oy) * sy);
         break;
       case 'C':
-      case 'c':
         obj.x = parseInt(ox + (obj.x - ox) * sx);
         obj.ctx = parseInt(ox + (obj.ctx - ox) * sx);
         obj.ct2x = parseInt(ox + (obj.ct2x - ox) * sx);
@@ -433,11 +440,17 @@ export function resize(d, ox, oy, sx, sy) {
         obj.ct2y = parseInt(oy + (obj.ct2y - oy) * sy);
         break;
       case 'Q':
-      case 'q':
+      case 'S':
         obj.x = parseInt(ox + (obj.x - ox) * sx);
         obj.ctx = parseInt(ox + (obj.ctx - ox) * sx);
         obj.y = parseInt(oy + (obj.y - oy) * sy);
         obj.cty = parseInt(oy + (obj.cty - oy) * sy);
+        break;
+      case 'H':
+        obj.val += parseInt(ox + (obj.val - ox) * sx);
+        break;
+      case 'V':
+        obj.val += parseInt(oy + (obj.val - oy) * sy);
         break;
     }
     list.push(obj);
@@ -455,11 +468,10 @@ export function rotate(d, ox, oy, r) {
       dy,
       x,
       y;
-    switch (obj.type) {
+    switch (obj.type.toUpperCase()) {
       case 'M':
       case 'L':
-      case 'm':
-      case 'l':
+      case 'T':
         dx = obj.x - ox;
         dy = obj.y - oy;
         x = ox + dx * Math.cos(r) + dy * Math.sin(r);
@@ -468,7 +480,6 @@ export function rotate(d, ox, oy, r) {
         obj.y = parseInt(y);
         break;
       case 'C':
-      case 'c':
         dx = obj.x - ox;
         dy = obj.y - oy;
         x = ox + dx * Math.cos(r) + dy * Math.sin(r);
@@ -491,7 +502,7 @@ export function rotate(d, ox, oy, r) {
         obj.ct2y = parseInt(y);
         break;
       case 'Q':
-      case 'q':
+      case 'S':
         dx = obj.x - ox;
         dy = obj.y - oy;
         x = ox + dx * Math.cos(r) + dy * Math.sin(r);

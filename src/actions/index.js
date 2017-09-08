@@ -112,6 +112,11 @@ export const toggleVisibility = index => ({
   index
 });
 
+export const toggleLock = index => ({
+  type: 'TOGGLE_LOCK',
+  index
+});
+
 export const changeGuide = (property, value) => ({
   type: 'CHANGE_GUIDE',
   property,

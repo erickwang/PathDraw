@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Modal from './Modal';
-import { selectUnit, changeStackOrder, toggleVisibility } from '../../actions';
+import { selectUnit, changeStackOrder, toggleVisibility, toggleLock } from '../../actions';
 
 let AllDraws = ({ allDraws, popups, dispatch }) => {
   if(!popups.allDraws){
@@ -19,6 +19,10 @@ let AllDraws = ({ allDraws, popups, dispatch }) => {
   const showDraw = (id) => {
       dispatch(toggleVisibility(id));
   };
+ 
+   const showLockDraw = (id) => { 
+      dispatch(toggleLock(id));
+  };
 
   const hideDraw = (id) => {
       dispatch(hideSelected(id));
@@ -33,13 +37,17 @@ let AllDraws = ({ allDraws, popups, dispatch }) => {
     <Modal title="All Drawings " id="allDrawsPanel" isVisible={popups.allDraws} popupName={'allDraws'}>
       <ol id="unitDraw" onClick={onItemClick} >
         {
-          allDraws.list.map((item, i) => {
+          allDraws.list.map((item, i) => { 
             const className = (i === allDraws.currentId) ? 'selected' : '';
             const iconClass = 'fa ' + (item.visible ? 'fa-eye' : 'fa-eye-slash');
+            const iconLock = 'fa ' + (item.lock ? 'fa-unlock-alt' : 'fa-lock');
             return (
                 <li key={i} id={`draw~${i}`} className={className} > {item.type} | {item.id}
-                  {' '}<i className={iconClass} style = {iconStyle} aria-hidden="true" onClick={e =>dispatch(toggleVisibility(i))} />
-                </li>
+                  {' '} <i className={iconClass} style = {iconStyle} aria-hidden="true" 
+                    onClick={e => dispatch(toggleVisibility(i))} />
+                   {' '} <i className={iconLock} style = {iconStyle} aria-hidden="true" 
+                      onClick={e => dispatch(toggleLock(i))} />
+                 </li>
               )
           })
         }

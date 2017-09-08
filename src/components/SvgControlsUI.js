@@ -26,7 +26,7 @@ class SvgControlsUI extends React.Component {
     if(this.isMoveDown){
       return;
     }
-    if(this.props.index == -1){
+    if(this.props.index == -1 || this.props.data.lock === false){
       utils.attr(this.bboxGroup, {display: 'none'});
       return;
     }

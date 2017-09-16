@@ -27,17 +27,17 @@ export default function allDraws(state = initialState, action) {
       switch(action.insertType){
         case 'rect':{
           obj = Object.assign({}, {x: (ptx<pt2x)?ptx:pt2x, y: (pty<pt2y)?pty:pt2y,
-            width: Math.abs(pt2x - ptx), height: Math.abs( pt2y - pty), borderRadius: 0 }, { id, type: action.insertType, visible:true});
+            width: Math.abs(pt2x - ptx), height: Math.abs( pt2y - pty), borderRadius: 0 }, { id, type: action.insertType, visible:true, lock:true });
           obj.d = createUtils.getRect(obj);
           break;
         }
         case 'line':{
-           obj = Object.assign({}, {x1: ptx, y1: pty, x2: pt2x, y2: pt2y}, { id, type: action.insertType, visible:true });
+           obj = Object.assign({}, {x1: ptx, y1: pty, x2: pt2x, y2: pt2y}, { id, type: action.insertType, visible:true, lock:true });
            obj.d = createUtils.getLine(obj);
           break;
         }
         case 'arrow':{
-          obj = Object.assign({}, {x1: ptx, y1: pty, x2: pt2x, y2: pt2y, isDouble:false}, { id, type: action.insertType, visible:true });
+          obj = Object.assign({}, {x1: ptx, y1: pty, x2: pt2x, y2: pt2y, isDouble:false}, { id, type: action.insertType, visible:true, lock:true });
           obj.d = createUtils.getArrow(obj);
           break;
         }
@@ -47,7 +47,7 @@ export default function allDraws(state = initialState, action) {
           let r = rx<ry?rx:ry;
           let x = (ptx<pt2x)?ptx:pt2x;
           let y = (pty<pt2y)?pty:pt2y;
-          obj = Object.assign({}, {cx: x + r, cy: y + r, r }, { id, type: action.insertType, visible:true });
+          obj = Object.assign({}, {cx: x + r, cy: y + r, r }, { id, type: action.insertType, visible:true, lock:true });
           obj.d = createUtils.getCircle(obj);
           break;
         }
@@ -56,16 +56,16 @@ export default function allDraws(state = initialState, action) {
           let ry = parseInt(Math.abs(pty - pt2y)/2);
           let x = (ptx<pt2x)?ptx:pt2x;
           let y = (pty<pt2y)?pty:pt2y;
-          obj = Object.assign({}, {cx: x + rx, cy: y + ry, rx, ry}, { id, type: action.insertType, reFix:true, visible:true  });
+          obj = Object.assign({}, {cx: x + rx, cy: y + ry, rx, ry}, { id, type: action.insertType, reFix:true, visible:true, lock:true });
           obj.d = createUtils.getEllipse(obj);
           break;
         }
         case 'path':{
-          obj = Object.assign({}, {d: action.ptx}, { id, type: action.insertType, visible:true });
+          obj = Object.assign({}, {d: action.ptx}, { id, type: action.insertType, visible:true, lock:true });
           break;
         }
         default:{
-          obj = Object.assign({}, insertNewTemplate[action.insertType], { id, type: action.insertType, visible:true });
+          obj = Object.assign({}, insertNewTemplate[action.insertType], { id, type: action.insertType, visible:true, lock:true });
           break;
         }
       }
@@ -130,6 +130,12 @@ export default function allDraws(state = initialState, action) {
       let objShow = state.list.get(action.index);
       objShow = { ...objShow, visible: !objShow.visible };
       return { ...state, list: state.list.set(action.index, objShow) };
+      //dhanbal edit
+      case 'TOGGLE_LOCK':
+      let objLockShow = state.list.get(action.index);
+      objLockShow = { ...objLockShow, lock: !objLockShow.lock };
+      return { ...state, list: state.list.set(action.index, objLockShow) };
+      
     default:
       return state;
   }

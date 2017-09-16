@@ -11,7 +11,7 @@ export function nodeToData(svgStr) {
   for (let i = 0; i < root.childNodes.length; i++) {
     const node = root.childNodes[i];
     if (node.nodeType != 1) {
-    	continue;
+      continue;
     }
     const type = node.nodeName.toLowerCase();
     let id = node.getAttribute('id');
@@ -64,8 +64,8 @@ export function dataToNode(data) {
         return (
           <g>
             {
-		            arr.map((o, i) => getUnit(item.type, o, i))
-		          }
+                arr.map((o, i) => getUnit(item.type, o, i))
+              }
           </g>
         );
       case '2dLoop':
@@ -73,12 +73,12 @@ export function dataToNode(data) {
         return (
           <g>
             {
-		            arr.map((a) => {
-		              return (
-		                a.map((o, i) => getUnit(item.type, o, i))
-		                );
-		            })
-		          }
+                arr.map((a) => {
+                  return (
+                    a.map((o, i) => getUnit(item.type, o, i))
+                    );
+                })
+              }
           </g>
         );
       case 'circular':
@@ -86,15 +86,15 @@ export function dataToNode(data) {
         return (
           <g>
             {
-		            arr.map((deg, i) => {
-		              const rotObj = {
-		                rotation: deg,
-		                cx: item.loopInfo.centerX,
-		                cy: item.loopInfo.centerY
-		              };
-		              return getRotatedUnit(item.type, item, rotObj, i);
-		            })
-		          }
+                arr.map((deg, i) => {
+                  const rotObj = {
+                    rotation: deg,
+                    cx: item.loopInfo.centerX,
+                    cy: item.loopInfo.centerY
+                  };
+                  return getRotatedUnit(item.type, item, rotObj, i);
+                })
+              }
           </g>
         );
       default:
@@ -108,18 +108,17 @@ export function dataToNode(data) {
     let str = '';
     const addObj = {};
     if (obj.strokeWidth) {
-    	addObj.strokeWidth = obj.strokeWidth;
+      addObj.strokeWidth = obj.strokeWidth;
     }
     if (obj.stroke) {
-    	addObj.stroke = obj.stroke;
+      addObj.stroke = obj.stroke;
     }
     if (obj.fill) {
-    	addObj.fill = obj.fill;
+      addObj.fill = obj.fill;
     }
     if(!obj.visible){
       addObj.display = 'none';
     }
-
     let id = obj.id;
     if (i) {
       id += `_${i}`;
@@ -134,13 +133,13 @@ export function dataToNode(data) {
     let str = '';
     const addObj = {};
     if (obj.strokeWidth) {
-    	addObj.strokeWidth = obj.strokeWidth;
+      addObj.strokeWidth = obj.strokeWidth;
     }
     if (obj.stroke) {
-    	addObj.stroke = obj.stroke;
+      addObj.stroke = obj.stroke;
     }
     if (obj.fill) {
-    	addObj.fill = obj.fill;
+      addObj.fill = obj.fill;
     }
     let id = obj.id;
     if (i) {
@@ -206,9 +205,9 @@ export function dataToNode(data) {
           const x = Number(obj.loopInfo.offset) + (Number(obj.loopInfo.step) * i);
           o.d = obj.d.replace(/x/g, `${x}`);
           while (o.d.indexOf('(') != -1) {
-          	const start = o.d.indexOf('(');
-          	const end = o.d.indexOf(')');
-          	o.d = o.d.substr(0, start) + eval(o.d.substr(start + 1, end)) + o.d.substr(end + 1);
+            const start = o.d.indexOf('(');
+            const end = o.d.indexOf(')');
+            o.d = o.d.substr(0, start) + eval(o.d.substr(start + 1, end)) + o.d.substr(end + 1);
           }
         }
       }
@@ -280,7 +279,7 @@ export function dataToObj(str) {
     const a = arr[i].split(' ');
     const obj = dataToObjUnit(arr[i]);
     if (obj) {
-    	data.push(obj);
+      data.push(obj);
     }
   }
   return data;
@@ -301,7 +300,7 @@ export function dataToObjUnit(str) {
         y: parseInt(a[2])
       };
       if (a.length != 3 || obj.x == NaN || obj.y == NaN) {
-        	return null;
+          return null;
       }
       break;
     case 'H':
@@ -325,7 +324,7 @@ export function dataToObjUnit(str) {
         y: parseInt(a[6])
       };
       if (a.length != 7 || obj.x == NaN || obj.y == NaN) {
-        	return null;
+          return null;
       }
       break;
     case 'Q':
@@ -338,7 +337,7 @@ export function dataToObjUnit(str) {
         y: parseInt(a[4])
       };
       if (a.length != 5 || obj.x == NaN || obj.y == NaN) {
-        	return null;
+          return null;
       }
       break;
     case 'Z':

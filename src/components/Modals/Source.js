@@ -4,6 +4,28 @@ import {connect} from 'react-redux';
 import Modal from './Modal';
 import {editSource} from '../../actions';
 
+
+import glamorous from 'glamorous';
+
+const Wrapper = glamorous.div({
+  width: 600,
+  textarea : {
+    backgroundColor: 'white',
+    border: '1px solid gray',
+    fontFamily: '"Courier New", "Lucida Console", Monospace',
+    margin: '20px 20px 0 20px',
+    height: 400,
+    width: '100%',
+    userSelect: 'default',
+    color: '#006674'
+  },
+  footer: {
+    padding:10,
+    textAlign: 'right'
+  }
+});
+
+
 class Source extends React.Component {
 
 	nodeRef;
@@ -31,11 +53,13 @@ class Source extends React.Component {
 		}
 		 return (
 		    <Modal title = "Source" id = "sourcePanel" popupName = {'source'}>
+		    	<Wrapper>
 					<textarea className = "source" ref = {n => {this.nodeRef = n}} >
 		            </textarea>
-		              <div className = "footer">
+		              <footer>
 		                <button className = "btn btn-primary" onClick = {e => this.props.dispatch(editSource(this.nodeRef.value))} > Update </button>
-		              </div>
+		              </footer>
+		            </Wrapper>
 				</Modal>
 		  )
 	}

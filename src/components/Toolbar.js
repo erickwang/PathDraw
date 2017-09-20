@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import { changeInsertType, remove, showPopup, zoom } from '../actions';
 import {ActionCreators} from 'redux-undo';
 
+import "./toolbar.css";
+
 let Toolbar = (props) => {
   let insertType;
   const dispatch = props.dispatch;
   return (
-    <div className="toolsWrapper">
+    <div styleName="toolsWrapper">
       {/*
               <button className="btn btn-primary"><i className="fa fa-floppy-o"></i> Save</button>
               <button className="btn btn-primary"><i className="fa fa-download" aria-hidden="true"></i> Save As Copy </button>
@@ -23,7 +25,7 @@ let Toolbar = (props) => {
       </select>
       <button className="btn btn-primary" onClick={e => dispatch(ActionCreators.undo())} /*style = {{color: props.isUndoEnabled?'inherit':'gray'}}*/>
         <i className="fa fa-trash" aria-hidden="true" />
-           Undo
+           UndoE
           </button>
       <button className="btn btn-primary" onClick={e => dispatch(ActionCreators.redo())} /*style = {{color: props.isRedoEnabled?'inherit':'gray'}}*/>
         <i className="fa fa-trash" aria-hidden="true" />

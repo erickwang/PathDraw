@@ -3,6 +3,9 @@ import { CompactPicker } from 'react-color';
 import { connect } from 'react-redux';
 
 import Modal from './Modal';
+
+import './properties.css';
+
 import { setDimension, setStroke, setStrokeWidth, setFill, setOtherConfigProps } from '../../actions';
 
 let Properties = ({ dispatch, ...props }) => {
@@ -17,18 +20,17 @@ let Properties = ({ dispatch, ...props }) => {
   }
   return (
     <Modal title="Properties" id="propertiesPanel" popupName={'properties'}>
+      <div styleName="propertiesPanel">
       <div className="propertyWidth">
         <label> Width : </label>
         <input
-          className="form-control"
-          id="svgWidth"
+          className="form-control svgWidth"
           value={props.width}
           onChange={e => dispatch(setDimension(true, e.target.value))}
         />
         <label> Height : </label>
         <input
-          className="form-control"
-          id="svgHeight"
+          className="form-control svgHeight"
           value={props.height}
           onChange={e => dispatch(setDimension(false, e.target.value))}
         /> <br />
@@ -67,6 +69,7 @@ let Properties = ({ dispatch, ...props }) => {
             onChange = {e => dispatch(setOtherConfigProps('smoothCurve', null))} />
           <label > Smooth Curve </label>
         </div>
+      </div>
       </div>
     </Modal>
   		);

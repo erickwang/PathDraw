@@ -5,7 +5,35 @@ import { connect } from 'react-redux';
 import { showPopup } from '../../actions';
 
 
-import './style.css';
+import glamorous from 'glamorous';
+
+const Wrapper = glamorous.div({
+  position: 'absolute',
+  backgroundColor: '#ddd',
+  display: 'inline-block',
+  color: '#006674',
+  border: '1px solid #c9c9ca',
+  fontSize: '0.8em',
+  boxShadow: '0 0 10px #888',
+  left: 700,
+  top: 230,
+
+  header: {
+      backgroundColor: '#006674',
+      padding: 5,
+      color: 'white',
+      i: {
+          display: 'inline-block',
+          float: 'right'
+      }
+  },
+
+  section: {
+    maxHeight: 600,
+    overflow: 'auto'
+  }
+})
+
 
 let Modal = (props) => {
   let dragPanel,
@@ -19,7 +47,12 @@ let Modal = (props) => {
       x: e.clientX - dragPanel.getBoundingClientRect().left,
       y: e.clientY - dragPanel.getBoundingClientRect().top,
     };
-    rootBox = document.querySelector('.pathMathWrapper').getBoundingClientRect();
+    rootBox = {
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0
+    }
     document.addEventListener('mousemove', panelDragMove);
     document.addEventListener('mouseup', panelDragStop);
   };
@@ -46,12 +79,14 @@ let Modal = (props) => {
   };
 
   return (
-    <div id={props.id} >
+    <Wrapper id={props.id}>
       <header onMouseDown={panelDragStart}>
         <h4> {props.title}            <i onClick={e => props.dispatch(showPopup(props.popupName, false))} className="fa fa-times" aria-hidden="true" /></h4>
       </header>
+      <section>
       {props.children}
-    </div>
+      </section>
+    </Wrapper>
   );
 };
 

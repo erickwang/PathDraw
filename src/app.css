@@ -1,0 +1,13 @@
+.pathMathWrapper {
+  min-height: 100vh;
+  user-select:none;
+
+  & > div {
+  	float: left;
+  }
+
+  svg {
+  	border: 1px solid  #c9c9ca;
+  	background-color: #ddd;
+  }
+}

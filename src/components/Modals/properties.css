@@ -1,0 +1,21 @@
+.propertiesPanel {
+  width: 300px;
+  & > div {
+    padding: 15px;
+    border-bottom: 1px solid #006674;
+  }
+
+  .svgWidth {
+	  width: 60px;
+	}
+
+	.svgHeight {
+	  width: 60px;
+	}
+
+  .divider {
+    margin: 0 10px ;
+    border-left: 1px solid #006674;
+    display: inline-block;
+  }
+}

@@ -4,6 +4,27 @@ import { connect } from 'react-redux';
 import Modal from './Modal';
 import { selectUnit, changeStackOrder, toggleVisibility, toggleLock } from '../../actions';
 
+import glamorous from 'glamorous';
+
+const Wrapper = glamorous.div({
+  width: 250,
+  li: {
+    backgroundColor: '#ddf',
+    cursor: 'default',
+    padding: '5px 10px',
+    '&:hover, &.selected': {
+      backgroundColor:'#ffff99'
+    }
+  },
+  footer: {
+    textAlign: 'center',
+    '> button': {
+      margin:'10px 2px 10px 2px',
+      display: 'inline-block'
+    }
+  }
+})
+
 let AllDraws = ({ allDraws, popups, dispatch }) => {
   if(!popups.allDraws){
     return null;
@@ -35,33 +56,35 @@ let AllDraws = ({ allDraws, popups, dispatch }) => {
 
   return (
     <Modal title="All Drawings " id="allDrawsPanel" isVisible={popups.allDraws} popupName={'allDraws'}>
-      <ol id="unitDraw" onClick={onItemClick} >
-        {
-          allDraws.list.map((item, i) => { 
-            const className = (i === allDraws.currentId) ? 'selected' : '';
-            const iconClass = 'fa ' + (item.visible ? 'fa-eye' : 'fa-eye-slash');
-            const iconLock = 'fa ' + (item.lock ? 'fa-unlock-alt' : 'fa-lock');
-            return (
-                <li key={i} id={`draw~${i}`} className={className} > {item.type} | {item.id}
-                  {' '} <i className={iconClass} style = {iconStyle} aria-hidden="true" 
-                    onClick={e => dispatch(toggleVisibility(i))} />
-                   {' '} <i className={iconLock} style = {iconStyle} aria-hidden="true" 
-                      onClick={e => dispatch(toggleLock(i))} />
-                 </li>
-              )
-          })
-        }
-      </ol>
-      <div>
-        <button className="btn btn-primary" onClick={e => dispatch(changeStackOrder(true))} id="upStackOrder" >
-          <i className="fa fa-arrow-up" aria-hidden="true" />
-              Move Up
-            </button>
-        <button className="btn btn-primary" onClick={e => dispatch(changeStackOrder(false))} id="downStackOrder">
-          <i className="fa fa-arrow-down" aria-hidden="true" />
-              Move Down
-            </button>
-      </div>
+      <Wrapper>
+        <ol id="unitDraw" onClick={onItemClick} >
+          {
+            allDraws.list.map((item, i) => { 
+              const className = (i === allDraws.currentId) ? 'selected' : '';
+              const iconClass = 'fa ' + (item.visible ? 'fa-eye' : 'fa-eye-slash');
+              const iconLock = 'fa ' + (item.lock ? 'fa-unlock-alt' : 'fa-lock');
+              return (
+                  <li key={i} id={`draw~${i}`} className={className} > {item.type} | {item.id}
+                    {' '} <i className={iconClass} style = {iconStyle} aria-hidden="true" 
+                      onClick={e => dispatch(toggleVisibility(i))} />
+                     {' '} <i className={iconLock} style = {iconStyle} aria-hidden="true" 
+                        onClick={e => dispatch(toggleLock(i))} />
+                   </li>
+                )
+            })
+          }
+        </ol>
+        <footer>
+          <button className="btn btn-primary" onClick={e => dispatch(changeStackOrder(true))} >
+            <i className="fa fa-arrow-up" aria-hidden="true" />
+                Move Up
+              </button>
+          <button className="btn btn-primary" onClick={e => dispatch(changeStackOrder(false))} >
+            <i className="fa fa-arrow-down" aria-hidden="true" />
+                Move Down
+              </button>
+        </footer>
+      </Wrapper>
     </Modal>
   );
 };

@@ -7,9 +7,9 @@ import AllDraws from './components/Modals/AllDraws';
 import Editor from './components/Modals/Editor';
 import Source from './components/Modals/Source';
 import Guide from './components/Modals/Guide';
-
+import './app.css';
 const App = () => (
-  <div className="pathMathWrapper">
+  <div styleName="pathMathWrapper">
 
       <Toolbar />
       <SVGRoot />

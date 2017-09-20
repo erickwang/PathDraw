@@ -4,6 +4,43 @@ import { connect } from 'react-redux';
 import Modal from './Modal';
 import { changeGuide, changeRules, toggleGuide } from '../../actions';
 
+
+import glamorous from 'glamorous';
+
+const Wrapper = glamorous.div({
+  width: 300,
+  '& > div': {
+    padding: 15,
+    borderBottom: '1px solid #006674'
+  },
+  'input[type=number]': {
+    width: 50
+  },
+  '.guideForm' : {
+    '.guideXY': {
+      margin: 10,
+      label: {
+        marginLeft: 26
+      },
+      '#x': {
+        marginRight: 14
+      }
+    },
+    '.guideWidth': {
+      marginTop: 10,
+      label: {
+        marginLeft: 12
+      }
+    }
+  },
+  '.form-control': {
+    padding: '2px 2px'
+  }
+})
+
+
+
+
 let Guide = props => {
   if(!props.popups.guide){
     return null;
@@ -54,6 +91,7 @@ let Guide = props => {
   const {hRules, vRules, showGuide, showRules} = props.guide;
   return (
       <Modal title="Guide" id="guidePanel" popupName={'guide'} >
+        <Wrapper>
         <div>
           <input type='text' className="form-control" value ={guideImg}
             ref = {n => {guideImageRef = n}} onChange = {onGuideChange}/>
@@ -102,6 +140,7 @@ let Guide = props => {
             onChange = {onToggle} />
           <label > Show Ruler </label>
     </div>
+    </Wrapper>
       </Modal>
             )
 };

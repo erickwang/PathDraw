@@ -5,6 +5,24 @@ import { editItem, editItemAttr, higherEdit } from '../../actions';
 import Modal from './Modal';
 import PathEditor from '../PathEditor';
 
+import glamorous from 'glamorous';
+
+const Wrapper = glamorous.div({
+  width: 350,
+
+  '& > div': {
+    padding: 15
+  },
+
+  input: {
+    width: 50
+  },
+
+  button: {
+    margin:'5px 0 5px 5px'
+  }
+})
+
 const defaultLoopInfo = {
   loop: {
     count: 5,
@@ -285,7 +303,8 @@ let Editor = ({ data, index, dispatch, popups }) => {
   }
   return (
     <Modal title="Editor" id="editItemPanel" popupName={'editor'}>
-      <div>
+      <Wrapper>
+        <div>
         <label >Loop Type : </label>
         <select className="form-control" value={data.loopType || 'none'} onChange={loopTypeChange}>
           <option value="">None </option>
@@ -300,6 +319,7 @@ let Editor = ({ data, index, dispatch, popups }) => {
       <div className="inputWrapper2">
         {input}
       </div>
+      </Wrapper>
     </Modal>
   );
 };

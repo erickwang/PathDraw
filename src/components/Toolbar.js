@@ -2,18 +2,23 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { changeInsertType, remove, showPopup, zoom } from '../actions';
 import {ActionCreators} from 'redux-undo';
-
-import "./toolbar.css";
+import glamorous from 'glamorous';
+const Wrapper = glamorous.div({
+  margin:10,
+  ' .form-control':{
+    padding:'2px 2px'
+  },
+  ' button':{
+    margin:3
+  }
+  })
 
 let Toolbar = (props) => {
   let insertType;
   const dispatch = props.dispatch;
   return (
-    <div styleName="toolsWrapper">
-      {/*
-              <button className="btn btn-primary"><i className="fa fa-floppy-o"></i> Save</button>
-              <button className="btn btn-primary"><i className="fa fa-download" aria-hidden="true"></i> Save As Copy </button>
-             */}
+    <Wrapper>
+    <div>
       <select className="form-control" id="insertType" value = {props.insertType} 
         onChange = {e => {dispatch(changeInsertType(e.target.value))}}>
         <option value="path"> Free Hand </option>
@@ -25,7 +30,7 @@ let Toolbar = (props) => {
       </select>
       <button className="btn btn-primary" onClick={e => dispatch(ActionCreators.undo())} /*style = {{color: props.isUndoEnabled?'inherit':'gray'}}*/>
         <i className="fa fa-trash" aria-hidden="true" />
-           UndoE
+           Undo
           </button>
       <button className="btn btn-primary" onClick={e => dispatch(ActionCreators.redo())} /*style = {{color: props.isRedoEnabled?'inherit':'gray'}}*/>
         <i className="fa fa-trash" aria-hidden="true" />
@@ -73,6 +78,7 @@ let Toolbar = (props) => {
           	Animate
           </button>
     </div>
+    </Wrapper>
   );
 };
 

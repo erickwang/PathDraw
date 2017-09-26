@@ -1,25 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import { editItem, editItemAttr, higherEdit } from '../../actions';
 import Modal from './Modal';
 import PathEditor from '../PathEditor';
-
 import glamorous from 'glamorous';
-
 const Wrapper = glamorous.div({
   width: 350,
-
+  fontSize: '0.8em',
   '& > div': {
     padding: 15
   },
-
-  input: {
+  '& input': {
     width: 50
   },
-
-  button: {
+  'button': {
     margin:'5px 0 5px 5px'
+  },
+  '& button:hover':{
+    backgroundColor:'#ffff99'
   }
 })
 
@@ -74,6 +72,7 @@ let Editor = ({ data, index, dispatch, popups }) => {
     case 'rect':
       input = (
         <div className="lineWidth">
+        <div>
           <label >X : </label>
           <input
             className="form-control"
@@ -88,6 +87,7 @@ let Editor = ({ data, index, dispatch, popups }) => {
             value={data.y}
             onChange={(e) => { attrChange('y', e); }}
           />
+          </div>
           <div>
             <label >Width : </label>
             <input

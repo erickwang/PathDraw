@@ -1,45 +1,42 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import Modal from './Modal';
 import { changeGuide, changeRules, toggleGuide } from '../../actions';
-
-
 import glamorous from 'glamorous';
-
 const Wrapper = glamorous.div({
   width: 300,
+  fontSize: '0.8em',
+  'header': {
+    padding: 5,
+    color: 'white',
+    'i': {
+      display: 'inline-block',
+      float: 'right',
+    }
+  },
+  '& .guide':{
+  width:'100%',
+  margin: '5px 0px',
+},
   '& > div': {
     padding: 15,
     borderBottom: '1px solid #006674'
   },
-  'input[type=number]': {
-    width: 50
+  '& .form-control':{
+  width: '100%'
+},
+  '& input[type=number]': {
+    width: 70
   },
-  '.guideForm' : {
-    '.guideXY': {
-      margin: 10,
-      label: {
-        marginLeft: 26
-      },
-      '#x': {
-        marginRight: 14
-      }
-    },
-    '.guideWidth': {
-      marginTop: 10,
-      label: {
-        marginLeft: 12
-      }
-    }
-  },
-  '.form-control': {
-    padding: '2px 2px'
-  }
+  '& .guideForm':{
+  '& .guideXY':{
+    marginLeft: 24,
+   '& .guideY':{
+  marginRight: 30
+}
+}
+}
 })
-
-
-
 
 let Guide = props => {
   if(!props.popups.guide){
@@ -102,7 +99,7 @@ let Guide = props => {
             <input className="form-control" type = "number" ref = {n => {xRef = n}}
               value = {x} 
               onChange = {onGuideChange}/>
-            <label>Y:</label>
+            <label className="guideY">Y:</label>
             <input className="form-control" type = "number" ref = {n => {yRef = n}} 
               value = {y} 
               onChange = {onGuideChange}/>

@@ -1,27 +1,28 @@
 import React from 'react';
 import {connect} from 'react-redux';
-
 import Modal from './Modal';
 import {editSource} from '../../actions';
-
-
 import glamorous from 'glamorous';
-
 const Wrapper = glamorous.div({
   width: 600,
-  textarea : {
-    backgroundColor: 'white',
+  fontSize: '0.8em',
+  'textarea' : {
+  color: '#006674',
+  boxShadow: '4px 4px 4px #888',
+  right: 0,
+  top: '230px',
+  },
+  '& footer': {
+    padding:'0px 20px 15px',
+    textAlign: 'right'
+  },
+  '& .source':{
     border: '1px solid gray',
     fontFamily: '"Courier New", "Lucida Console", Monospace',
-    margin: '20px 20px 0 20px',
+    margin:'20px 20px 0 20px',
     height: 400,
-    width: '100%',
-    userSelect: 'default',
-    color: '#006674'
-  },
-  footer: {
-    padding:10,
-    textAlign: 'right'
+      fontSize: 16,
+    width:'calc(100% - 42px)'
   }
 });
 

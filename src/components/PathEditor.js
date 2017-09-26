@@ -1,10 +1,53 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-
 import * as utils from '../utils';
 import segUtils from '../utils/segUtils';
-
 import { editItem, selectPathSeg } from '../actions';
+import glamorous from 'glamorous';
+const Wrapper = glamorous.div({
+  ' li': {
+    backgroundColor: '#eee',
+    cursor: 'default',
+    listStylePosition: 'inside',
+    padding: '5px 10px',
+    'ol & :hover': {
+        backgroundColor: '#ffff99',
+      },
+    'ol & .selected': {
+        backgroundColor: '#fff'
+    },
+    '& .invalid': {
+        color: '#ff0000'
+    }
+  },
+  '.dWrapper': {
+    '::-webkit-scrollbar': {
+        width: '0.5em'
+    }
+  },
+  ' textarea': {
+    minWidth: '100%'
+  },
+  ' .btnWrapper': {
+    'button': {
+      '&:hover': {
+          backgroundColor: '#ffff99'
+      }
+    }
+  },
+  ' ol': {
+    border: '1px solid #c9c9ca',
+    marginTop: 5,
+    maxHeight: '200px',
+    overflowY: 'auto', 
+    '& li:hover': {
+        backgroundColor: '#ffff99'
+    },
+    '& li.selected': {
+        backgroundColor: '#ffff99'
+    }
+  }
+})
 
 class PathEditor extends Component{
   constructor(props){
@@ -99,9 +142,10 @@ class PathEditor extends Component{
       opacity: (this.props.segIndex === -1) ? 0.5 : 1
     }
     return (
+      <Wrapper>
       <div className="pathListWrapper">
         <div className="dWrapper">
-          <label>data : </label>
+          <label>Data : </label>
           <textarea className = "form-control"
             type="text"
             value={this.props.data.d}
@@ -132,6 +176,7 @@ class PathEditor extends Component{
         }
         </ol>
       </div>
+      </Wrapper>
     );
   }
 }

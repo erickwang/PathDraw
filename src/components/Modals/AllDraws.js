@@ -1,28 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import Modal from './Modal';
 import { selectUnit, changeStackOrder, toggleVisibility, toggleLock } from '../../actions';
-
 import glamorous from 'glamorous';
 
 const Wrapper = glamorous.div({
-  width: 250,
-  li: {
-    backgroundColor: '#ddf',
-    cursor: 'default',
-    padding: '5px 10px',
-    '&:hover, &.selected': {
-      backgroundColor:'#ffff99'
-    }
+  backgroundColor:'#ddd',
+  maxHeight: 600,
+  width: 236,
+  '& li:hover, .selected':{
+    backgroundColor:'#ffff99',
   },
-  footer: {
-    textAlign: 'center',
-    '> button': {
-      margin:'10px 2px 10px 2px',
-      display: 'inline-block'
-    }
-  }
+  '& li': {
+    backgroundColor: '#ddf',
+    color: '#333',
+    fontSize:'1em',
+    cursor: 'default',
+    padding: '5px 10px', 
+  },
+    '& footer > button': {
+      margin:'30px 5px 10px 5px',
+    },
+    
 })
 
 let AllDraws = ({ allDraws, popups, dispatch }) => {

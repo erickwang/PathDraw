@@ -1,12 +1,28 @@
 import React from 'react';
 import { CompactPicker } from 'react-color';
 import { connect } from 'react-redux';
-
 import Modal from './Modal';
-
-import './properties.css';
-
+import glamorous from 'glamorous';
 import { setDimension, setStroke, setStrokeWidth, setFill, setOtherConfigProps } from '../../actions';
+const Wrapper = glamorous.div({
+  width: 300,
+  fontSize: '0.8em',
+  ' & > div': {
+    padding: 15,
+    borderBottom: '1px solid #006674'
+  },
+  ' .svgWidth': {
+    width: 60
+  },
+  ' .svgHeight': {
+    width: 60
+  },
+  ' .divider': {
+    margin: '0 10px' ,
+    borderLeft: '1px solid #006674'
+  },
+
+  })
 
 let Properties = ({ dispatch, ...props }) => {
   if(!props.popups.properties){
@@ -20,7 +36,7 @@ let Properties = ({ dispatch, ...props }) => {
   }
   return (
     <Modal title="Properties" id="propertiesPanel" popupName={'properties'}>
-      <div styleName="propertiesPanel">
+    <Wrapper>
       <div className="propertyWidth">
         <label> Width : </label>
         <input
@@ -42,6 +58,7 @@ let Properties = ({ dispatch, ...props }) => {
           value={props.stroke}
           onChangeComplete={color => dispatch(setStroke(color.hex))}
         /><br />
+        <br />
         <label> Stroke Weight : </label>
         <input
           className="form-control"
@@ -70,7 +87,7 @@ let Properties = ({ dispatch, ...props }) => {
           <label > Smooth Curve </label>
         </div>
       </div>
-      </div>
+      </Wrapper>
     </Modal>
   		);
 }

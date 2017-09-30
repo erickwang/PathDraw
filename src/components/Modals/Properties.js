@@ -21,7 +21,16 @@ const Wrapper = glamorous.div({
     margin: '0 10px' ,
     borderLeft: '1px solid #006674'
   },
-
+  ' .stroke .form-control':{
+    width:'50px !important',
+     padding:'2px 2px!important'
+},
+' .propertyWidth label':{
+marginLeft:10
+},
+'& label':{
+  marginBottom:5
+}
   })
 
 let Properties = ({ dispatch, ...props }) => {

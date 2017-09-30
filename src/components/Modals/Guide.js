@@ -35,6 +35,14 @@ const Wrapper = glamorous.div({
   marginRight: 30
 }
 }
+},
+' .guideForm input':{
+  marginBottom:5,
+  marginTop:5
+},
+' .hvguideline label':{
+  marginBottom:5,
+  marginTop:5
 }
 })
 
@@ -116,13 +124,13 @@ let Guide = props => {
           </div>
           </div>
 
-          <div >
+          <div className="hvguideline">
             <label>Horizontal GuideLines : </label>
               <input className="form-control"  type = "text" ref = {n => {hLineRef = n}}
                 onChange = {onRulesChange}
                 value = {hRules.join(',')} />
 
-            <label  className="verti">Vertical GuideLines : </label>
+            <label>Vertical GuideLines : </label>
               <input className="form-control "  type = "text" ref = {n => {vLineRef = n}}
                 onChange = {onRulesChange}
                 value = {vRules.join(',')} />

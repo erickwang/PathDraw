@@ -18,7 +18,44 @@ const Wrapper = glamorous.div({
   },
   '& button:hover':{
     backgroundColor:'#ffff99'
+  },
+  ' .line':{
+  marginLeft:30,
+   padding:'2px 2px!important'
+},
+' .line1':{
+  marginLeft:35,
+  marginTop:25
+},
+' .circle':{
+  marginLeft: 10
+},
+' .ellipse':{
+  marginLeft: 30
+},
+' .ellipse1':{
+  marginLeft: 32,
+  marginTop:20
+},
+' .lineWidth,.ellipseWidth,.circleWidth':{
+  ' .form-control':{
+    width:'40px !important',
+     padding:'2px 2px!important'
   }
+},
+' .circleXY,.loopCount':{
+  paddingLeft:'10px!important',
+  ' .form-control':{
+   width:'47px !important',
+     padding:'1px 1px!important'
+  },
+  ' label':{
+  marginLeft:'0px!important'
+},
+' input':{
+  marginRight: 7
+}
+}
 })
 
 const defaultLoopInfo = {

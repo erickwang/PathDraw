@@ -5,6 +5,15 @@ import SvgControlsUI from './SvgControlsUI';
 import Ruler from './Ruler';
 import { insert, editItem, selectUnit} from '../actions';
 import * as utils from '../utils';
+import glamorous from 'glamorous';
+const Wrapper = glamorous.div({
+' #rootSvg':{
+  backgroundColor: '#ddd'
+},
+' #content':{
+  backgroundColor:'white'
+}
+})
 
 class SVGRoot extends React.Component {
 

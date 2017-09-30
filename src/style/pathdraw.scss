@@ -48,78 +48,6 @@ body{
 .fa{
   margin-right:5px;
 }
-#rootSvg {
-  background-color: #ddd;
-}
-#content {
-  background-color: white;
-}
-svg text {
-  font-family: monospace;
-  fill: #033138;
-  stroke: "none";
-}
-.form-control{
-  width:auto;
-}
-.check{
- input[type="checkbox"]{
- transform:scale(2);
-margin:10px 10px 10px 20px;
-}
-input[type="checkbox"]:checked{
- color: red!important;
-}
-}
-
-.line{
-  margin-left:30px;
-   padding:2px 2px!important;
-}
-.line1{
-  margin-left:35px;
-  margin-top:25px;
-}
-.circle{
-  margin-left: 10px;
-}
-.ellipse{
-  margin-left: 30px;
-}
-.ellipse1{
-  margin-left: 32px;
-  margin-top:20px;
-}
-.lineWidth,.ellipseWidth,.circleWidth{
-  .form-control{
-    width:40px !important;
-     padding:2px 2px!important;
-  }
-}
-.circleXY,.loopCount{
-  padding-left:10px!important;
-  .form-control{
-   width:47px !important;
-     padding:1px 1px!important;
-  }
-  label{
-  margin-left:0px!important;
-}
-input{
-  margin-right: 7px;
-}
-}
-.propertyWidth{
-  label{
-margin-left:10px;
-  }
-}
-.stroke{
-  .form-control{
-    width:50px !important;
-     padding:2px 2px!important;
-  }
-}
 .btn:focus, .btn:active{
   outline:none !important;
   background-color: #fff;
@@ -135,4 +63,19 @@ margin-left:10px;
 }
 .form-control {
   display: inline;
+  width:auto;
+}
+svg text {
+  font-family: monospace;
+  fill: #033138;
+  stroke: "none";
+}
+.check{
+ input[type="checkbox"]{
+ transform:scale(2);
+margin:10px 10px 10px 20px;
+}
+input[type="checkbox"]:checked{
+ color: red!important;
+}
 }

@@ -4,7 +4,7 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import App from './App';
 import reducer from './reducers';
-import './style/pathdraw.scss';
+import './style/pathdraw.css';
 const store = createStore(reducer);
 
 

@@ -16,14 +16,15 @@ var cssDev = [{
 			loader: 'style-loader'
 		},{
 			loader: 'css-loader',
+			/*
 			options: {
 				importLoader: 1,
 				modules: true,
 				localIdentName: '[name]_[local]_[hash:base64:5]'
-			}
-		}, {
+			}*/
+		}/*, {
 			loader: 'sass-loader'
-		}];
+		}*/];
 var cssProd = ExtractTextPlugin.extract({
 	fallback:'style-loader',
 	use:[{
@@ -48,10 +49,10 @@ module.exports = {
     },
     module:{
 		rules:[
-			{
+			/*{
 				test: /\.scss$/, 
 				use:scssConfig
-			},
+			},*/
 			{
 				test:/\.js$/,
 				exclude:/node_modules/,

@@ -3,6 +3,28 @@ import { connect } from 'react-redux';
 import Modal from './Modal';
 import { selectUnit, changeStackOrder, toggleVisibility, toggleLock } from '../../actions';
 import glamorous from 'glamorous';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  background-color: #ddd;
+  max-height: 600px;
+  width: 236px;
+
+  & li:hover, & .selected:{
+    background-color: #ffff99,
+  }
+
+  & li {
+    background-color: #ddf;
+    color: #333;
+    font-size:1em;
+    cursor: default;
+    padding: 5px 10px;
+  }
+  & footer > button: {
+    margin:'30px 5px 10px 5px';
+  }
+`
 
 const Wrapper = glamorous.div({
   backgroundColor:'#ddd',
@@ -23,6 +45,7 @@ const Wrapper = glamorous.div({
     },
     
 })
+
 
 let AllDraws = ({ allDraws, popups, dispatch }) => {
   if(!popups.allDraws){

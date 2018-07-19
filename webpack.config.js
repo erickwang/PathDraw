@@ -72,7 +72,10 @@ module.exports = {
 		contentBase:path.join(__dirname, "build"),
 		//compress:true, //gzip
 		port:9000,
-		hot:true
+		hot:true,
+		disableHostCheck: true, 
+    historyApiFallback: true, 
+    host:'0.0.0.0'
 	},
 	plugins:[new HtmlWebpackPlugin({
 		title:'Path Draw',

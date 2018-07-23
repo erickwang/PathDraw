@@ -2,30 +2,30 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Modal from './Modal';
 import {editSource} from '../../actions';
-import glamorous from 'glamorous';
-const Wrapper = glamorous.div({
-  width: 600,
-  fontSize: '0.8em',
-  'textarea' : {
-  color: '#006674',
-  boxShadow: '4px 4px 4px #888',
-  right: 0,
-  top: '230px',
-  },
-  '& footer': {
-    padding:'0px 20px 15px',
-    textAlign: 'right'
-  },
-  '& .source':{
-    border: '1px solid gray',
-    fontFamily: '"Courier New", "Lucida Console", Monospace',
-    margin:'20px 20px 0 20px',
-    height: 400,
-      fontSize: 16,
-    width:'calc(100% - 42px)'
-  }
-});
+import styled from 'styled-components';
 
+const Wrapper = styled.div`
+	width: 600px;
+	font-size: 0.8em;
+	textarea {
+		color: #006674;
+		box-shadow: 4px 4px 4px #888;
+		right: 0;
+		top: 230px;
+	}
+	& footer {
+		padding: 0px 20px 15px;
+		text-align: right;
+	}
+	& .source {
+    border: 1px solid gray;
+    font-family: "Courier New", "Lucida Console", Monospace;
+    margin: 20px 20px 0 20px;
+    height: 400px;
+     font-size: 16px;
+    width: calc(100% - 42px);
+  }
+`
 
 class Source extends React.Component {
 

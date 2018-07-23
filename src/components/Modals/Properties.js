@@ -2,36 +2,37 @@ import React from 'react';
 import { CompactPicker } from 'react-color';
 import { connect } from 'react-redux';
 import Modal from './Modal';
-import glamorous from 'glamorous';
 import { setDimension, setStroke, setStrokeWidth, setFill, setOtherConfigProps } from '../../actions';
-const Wrapper = glamorous.div({
-  width: 300,
-  fontSize: '0.8em',
-  ' & > div': {
-    padding: 15,
-    borderBottom: '1px solid #006674'
-  },
-  ' .svgWidth': {
-    width: 60
-  },
-  ' .svgHeight': {
-    width: 60
-  },
-  ' .divider': {
-    margin: '0 10px' ,
-    borderLeft: '1px solid #006674'
-  },
-  ' .stroke .form-control':{
-    width:'50px !important',
-     padding:'2px 2px!important'
-},
-' .propertyWidth label':{
-marginLeft:10
-},
-'& label':{
-  marginBottom:5
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  width: 300px;
+  font-size: 0.8em;
+   & > div {
+    padding: 15px;
+    border-bottom: 1px solid #006674;
+  }
+   .svgWidth {
+    width: 60px;
+  }
+   .svgHeight {
+    width: 60px;
+  }
+   .divider {
+    margin: 0 10px;
+    border-left: 1px solid #006674;
+  }
+   .stroke .form-control {
+     width: 50px !important;
+     padding:2px 2px!important;
+  }
+  .propertyWidth label {
+   margin-left:10px;
+ }
+ & label {
+  margin-bottom:5px;
 }
-  })
+`
 
 let Properties = ({ dispatch, ...props }) => {
   if(!props.popups.properties){

@@ -3,51 +3,52 @@ import { connect } from 'react-redux';
 import * as utils from '../utils';
 import segUtils from '../utils/segUtils';
 import { editItem, selectPathSeg } from '../actions';
-import glamorous from 'glamorous';
-const Wrapper = glamorous.div({
-  ' li': {
-    backgroundColor: '#eee',
-    cursor: 'default',
-    listStylePosition: 'inside',
-    padding: '5px 10px',
-    'ol & :hover': {
-        backgroundColor: '#ffff99',
-      },
-    'ol & .selected': {
-        backgroundColor: '#fff'
-    },
-    '& .invalid': {
-        color: '#ff0000'
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+ li {
+  background-color: #eee;
+  cursor: default;
+  list-style-position: inside;
+  padding: 5px 10px;
+  ol & :hover {
+      background-color: #ffff99;
     }
-  },
-  '.dWrapper': {
-    '::-webkit-scrollbar': {
-        width: '0.5em'
-    }
-  },
-  ' textarea': {
-    minWidth: '100%'
-  },
-  ' .btnWrapper': {
-    'button': {
-      '&:hover': {
-          backgroundColor: '#ffff99'
-      }
-    }
-  },
-  ' ol': {
-    border: '1px solid #c9c9ca',
-    marginTop: 5,
-    maxHeight: '200px',
-    overflowY: 'auto', 
-    '& li:hover': {
-        backgroundColor: '#ffff99'
-    },
-    '& li.selected': {
-        backgroundColor: '#ffff99'
+  ol & .selected {
+      background-color: #fff;
+  }
+  & .invalid {
+      color: #ff0000;
+  }
+ }
+ .dWrapper {
+  ::-webkit-scrollbar {
+      width: 0.5em;
+  }
+}
+ textarea {
+  min-width: 100%;
+}
+ .btnWrapper {
+  button: {
+    &:hover {
+        background-color: #ffff99;
     }
   }
-})
+}
+ ol {
+  border: 1px solid #c9c9ca;
+  margin-top: 5px;
+  max-height: 200px;
+  overflowY: auto; 
+  & li:hover: {
+      background-color: #ffff99;
+  }
+  & li.selected {
+      background-color: #ffff99;
+  }
+}
+`
 
 class PathEditor extends Component{
   constructor(props){

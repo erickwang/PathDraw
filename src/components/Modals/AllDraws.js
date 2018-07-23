@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Modal from './Modal';
 import { selectUnit, changeStackOrder, toggleVisibility, toggleLock } from '../../actions';
-import glamorous from 'glamorous';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -10,7 +9,7 @@ const Wrapper = styled.div`
   max-height: 600px;
   width: 236px;
 
-  & li:hover, & .selected:{
+  & li:hover, & .selected {
     background-color: #ffff99,
   }
 
@@ -21,31 +20,10 @@ const Wrapper = styled.div`
     cursor: default;
     padding: 5px 10px;
   }
-  & footer > button: {
-    margin:'30px 5px 10px 5px';
+  & footer > button {
+    margin: 30px 5px 10px 5px;
   }
 `
-
-const Wrapper = glamorous.div({
-  backgroundColor:'#ddd',
-  maxHeight: 600,
-  width: 236,
-  '& li:hover, .selected':{
-    backgroundColor:'#ffff99',
-  },
-  '& li': {
-    backgroundColor: '#ddf',
-    color: '#333',
-    fontSize:'1em',
-    cursor: 'default',
-    padding: '5px 10px', 
-  },
-    '& footer > button': {
-      margin:'30px 5px 10px 5px',
-    },
-    
-})
-
 
 let AllDraws = ({ allDraws, popups, dispatch }) => {
   if(!popups.allDraws){

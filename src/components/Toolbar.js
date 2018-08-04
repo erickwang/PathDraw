@@ -2,16 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { changeInsertType, remove, showPopup, zoom, animate } from '../actions';
 import {ActionCreators} from 'redux-undo';
-import glamorous from 'glamorous';
-const Wrapper = glamorous.div({
-  margin:10,
-  ' .form-control':{
-    padding:'2px 2px'
-  },
-  ' button':{
-    margin:3
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  margin:10px;
+   .form-control {
+    padding: 2px 2px;
   }
-  })
+   button {
+    margin:3px
+  }
+`
 
 let Toolbar = (props) => {
   let insertType;

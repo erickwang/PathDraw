@@ -3,60 +3,61 @@ import { connect } from 'react-redux';
 import { editItem, editItemAttr, higherEdit, changeAnimation } from '../../actions';
 import Modal from './Modal';
 import PathEditor from '../PathEditor';
-import glamorous from 'glamorous';
-const Wrapper = glamorous.div({
-  width: 350,
-  fontSize: '0.8em',
-  '& > div': {
-    padding: 15
-  },
-  '& input': {
-    width: 50
-  },
-  'button': {
-    margin:'5px 0 5px 5px'
-  },
-  '& button:hover':{
-    backgroundColor:'#ffff99'
-  },
-  ' .line':{
-  marginLeft:30,
-   padding:'2px 2px!important'
-},
-' .line1':{
-  marginLeft:35,
-  marginTop:25
-},
-' .circle':{
-  marginLeft: 10
-},
-' .ellipse':{
-  marginLeft: 30
-},
-' .ellipse1':{
-  marginLeft: 32,
-  marginTop:20
-},
-' .lineWidth,.ellipseWidth,.circleWidth':{
-  ' .form-control':{
-    width:'40px !important',
-     padding:'2px 2px!important'
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  width: 350px;
+  font-size: 0.8em;
+  & > div {
+    padding: 15px;
   }
-},
-' .circleXY,.loopCount':{
-  paddingLeft:'10px!important',
-  ' .form-control':{
-   width:'47px !important',
-     padding:'1px 1px!important'
-  },
-  ' label':{
-  marginLeft:'0px!important'
-},
-' input':{
-  marginRight: 7
-}
-}
-})
+  & input {
+    width: 50px;
+  }
+  button {
+    margin: 5px 0 5px 5px;
+  }
+  & button:hover {
+    background-color:#ffff99;
+  }
+  .line {
+    margin-left:30px;
+    padding: 2px 2px!important;
+  }
+  .line1 {
+    margin-left:35px;
+    margin-top:25px;
+  }
+  .circle {
+    margin-left: 10px;
+  }
+   .ellipse {
+    margin-left: 30px;
+  }
+   .ellipse1 {
+    margin-left: 32px;
+    margin-top:20px;
+  }
+   .lineWidth, .ellipseWidth, .circleWidth {
+     .form-control {
+       width: 40px !important;
+       padding: 2px 2px!important;
+    }
+  }
+   .circleXY, .loopCount {
+    padding-left: 10px!important;
+     .form-control {
+       width: 47px !important;
+       padding: 1px 1px!important;
+    }
+     label {
+    margin-left: 0px!important;
+  }
+   input {
+    margin-right: 7px
+  }
+  }
+`
 
 const defaultLoopInfo = {
   loop: {

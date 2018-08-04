@@ -2,49 +2,50 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Modal from './Modal';
 import { changeGuide, changeRules, toggleGuide } from '../../actions';
-import glamorous from 'glamorous';
-const Wrapper = glamorous.div({
-  width: 300,
-  fontSize: '0.8em',
-  'header': {
-    padding: 5,
-    color: 'white',
-    'i': {
-      display: 'inline-block',
-      float: 'right',
+import styled from 'styled-components';
+
+ const Wrapper = styled.div`
+  width: 300px;
+  font-size: 0.8em;
+  header {
+    padding: 5px;
+    color: white;
+    i {
+      display: inline-block;
+      float: right;
     }
-  },
-  '& .guide':{
-  width:'100%',
-  margin: '5px 0px',
-},
-  '& > div': {
-    padding: 15,
-    borderBottom: '1px solid #006674'
-  },
-  '& .form-control':{
-  width: '100%'
-},
-  '& input[type=number]': {
-    width: 70
-  },
-  '& .guideForm':{
-  '& .guideXY':{
-    marginLeft: 24,
-   '& .guideY':{
-  marginRight: 30
+  }
+  & .guide {
+    width: 100%;
+    margin: 5px 0px;
+  }
+  & > div {
+    padding: 15px;
+    border-bottom: 1px solid #006674;
+  }
+  & .form-control {
+  width: 100%
 }
-}
-},
-' .guideForm input':{
-  marginBottom:5,
-  marginTop:5
-},
-' .hvguideline label':{
-  marginBottom:5,
-  marginTop:5
-}
-})
+  & input[type=number] {
+    width: 70px;
+  }
+  & .guideForm {
+  & .guideXY {
+    margin-left: 24px;
+  & .guideY {
+  margin-right: 30px;
+  }
+  }
+  }
+   .guideForm input {
+  margin-bottom:5px;
+  margin-top:5px;
+  }
+   .hvguideline label {
+  margin-bottom:5px;
+  margin-top:5px;
+  }
+`
 
 let Guide = props => {
   if(!props.popups.guide){

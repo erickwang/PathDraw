@@ -2,37 +2,38 @@ import React from 'react';
 import { CompactPicker } from 'react-color';
 import { connect } from 'react-redux';
 import { showPopup } from '../../actions';
-import glamorous from 'glamorous';
-const Wrapper = glamorous.div({
-  position: 'absolute',
-  backgroundColor: '#ddd',
-  display: 'inline-block',
-  color: '#006674',
-  border: '1px solid #006674',
-  fontSize: '1em',
-  boxShadow:'0 5px 10px rgba(0,0,0,0.50)',
-  left: 700,
-  top: 230,
-  '& header': {
-      backgroundColor: '#006674',
-      padding: 5,
-      color: 'white',
-      '& i': {
-          display: 'inline-block',
-          float: 'right'
-      }
-  },
-'& > div' :{
-    padding: 15
-  },
-  '& button':{
-    margin:'5px 0 5px 5px'
-  },
-  '& section': {
-    maxHeight: 600
-  }
-})
+import styled from 'styled-components';
 
+ const Wrapper = styled.div`
+ position: absolute;
+ background-color: #ddd;
+ display: inline-block;
+ color: #006674;
+ border: 1px solid #006674;
+ font-size: 1em;
+ box-shadow: 0 5px 10px rgba(0,0,0,0.50);
+ left: 700px;
+ top: 230px;
+  & header {
+     background-color: #006674;
+     padding: 5px;
+     color: white;
+     & i {
+         display: inline-block;
+         float: right;
+     }
+ }
+& > div {
+   padding: 15px;
+ }
+ & button {
+   margin: 5px 0 5px 5px;
+ }
+ & section {
+   max-height: 600px;
+ }
+ `
+ 
 let Modal = (props) => {
   let dragPanel,
     rootBox,

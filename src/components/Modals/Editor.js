@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { editItem, editItemAttr, higherEdit } from '../../actions';
+import { editItem, editItemAttr, higherEdit, changeAnimation } from '../../actions';
 import Modal from './Modal';
 import PathEditor from '../PathEditor';
 import glamorous from 'glamorous';
@@ -338,6 +338,7 @@ let Editor = ({ data, index, dispatch, popups }) => {
       break;
 
   }
+
   return (
     <Modal title="Editor" id="editItemPanel" popupName={'editor'}>
       <Wrapper>
@@ -355,6 +356,52 @@ let Editor = ({ data, index, dispatch, popups }) => {
       {loopDom}
       <div className="inputWrapper2">
         {input}
+      </div>
+      <div>
+        <div>
+          <button> Insert</button>
+          <button> Disable</button>
+          <button> Delete</button>
+        </div>
+        <div>
+        {
+          data.animateData && data.animateData.map((item, i) => (
+            <div style={{borderBottom: '1px solid blue', padding: 3}}>
+            {
+              item.map((value,key) => (
+                <div>
+                  <span>
+                    <select className="form-control" value={key} onChange={
+                      e => {
+                        const animateData = data.animateData.setIn([i, e.target.value], 0).deleteIn([i, key]);
+                        dispatch(changeAnimation(animateData));
+                      }
+                    }>
+                      <option value="translateX">move x </option>
+                      <option value="translateY">move y </option>
+                      <option value="scaleX" > scale x </option>
+                      <option value="scaleY" > scale y </option>
+                      <option value="scale" > scale </option>
+                      <option value="rotate" > rotate </option>
+                    </select>
+                  </span> :
+                  <input type="text" value = {value} onChange={e => {
+                    const animateData = data.animateData.setIn([i, key], Number(e.target.value));
+                    dispatch(changeAnimation(animateData));
+                  }} />
+                </div>
+              ))
+            }
+            <div>
+              <span> duration: </span>
+              <span> <input value = {1000} /> </span>
+              <span> delay: </span>
+              <span> <input value = {1000} /></span>
+            </div>
+            </div>
+          ))
+        }
+        </div>
       </div>
       </Wrapper>
     </Modal>

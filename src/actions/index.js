@@ -35,6 +35,15 @@ export const zoom = zoomType => ({
   zoomType
 });
 
+export const animate = () => ({
+  type: 'ANIMATE'
+});
+
+export const changeAnimation = (animateData) => ({
+  type: 'CHANGE_ANIMATION',
+  animateData
+});
+
 // Actions from Properties Panel
 
 

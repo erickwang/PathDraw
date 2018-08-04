@@ -25,7 +25,7 @@ const Wrapper = styled.div`
     margin:'30px 5px 10px 5px';
   }
 `
-
+/*
 const Wrapper = glamorous.div({
   backgroundColor:'#ddd',
   maxHeight: 600,
@@ -45,7 +45,7 @@ const Wrapper = glamorous.div({
     },
     
 })
-
+*/
 
 let AllDraws = ({ allDraws, popups, dispatch }) => {
   if(!popups.allDraws){

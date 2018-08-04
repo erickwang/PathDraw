@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { changeInsertType, remove, showPopup, zoom } from '../actions';
+import { changeInsertType, remove, showPopup, zoom, animate } from '../actions';
 import {ActionCreators} from 'redux-undo';
 import glamorous from 'glamorous';
 const Wrapper = glamorous.div({
@@ -73,7 +73,7 @@ let Toolbar = (props) => {
         <i className="fa fa-clone" aria-hidden="true" />
           	Exact Fit
           </button>
-      <button className="btn btn-primary" id="animateBtn" onClick={e => dispatch(zoom('fit'))}>
+      <button className="btn btn-primary" id="animateBtn" onClick={e => dispatch(animate())}>
         <i className="fa fa-play" aria-hidden="true" />
           	Animate
           </button>

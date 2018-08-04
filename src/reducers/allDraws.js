@@ -1,4 +1,4 @@
-import { List } from 'immutable';
+import { List, fromJS } from 'immutable';
 
 import * as utils from '../utils';
 import * as createUtils from '../utils/createUtils';
@@ -18,6 +18,21 @@ const insertNewTemplate = {
   path: { d: 'M 100 100 C 100 200 200 200 200 100' }
 };
 
+const animateData = [
+  {
+    translateX: 100
+  },
+  {
+    translateY: 100
+  },
+  {
+    translateX: 0
+  },
+  {
+    translateY: 0
+  }
+]
+
 export default function allDraws(state = initialState, action) {
   switch (action.type) {
     case 'INSERT':
@@ -29,6 +44,7 @@ export default function allDraws(state = initialState, action) {
           obj = Object.assign({}, {x: (ptx<pt2x)?ptx:pt2x, y: (pty<pt2y)?pty:pt2y,
             width: Math.abs(pt2x - ptx), height: Math.abs( pt2y - pty), borderRadius: 0 }, { id, type: action.insertType, visible:true, lock:true });
           obj.d = createUtils.getRect(obj);
+          obj.animateData = fromJS(animateData);
           break;
         }
         case 'line':{
@@ -131,11 +147,16 @@ export default function allDraws(state = initialState, action) {
       objShow = { ...objShow, visible: !objShow.visible };
       return { ...state, list: state.list.set(action.index, objShow) };
       //dhanbal edit
-      case 'TOGGLE_LOCK':
+    case 'TOGGLE_LOCK':
       let objLockShow = state.list.get(action.index);
       objLockShow = { ...objLockShow, lock: !objLockShow.lock };
       return { ...state, list: state.list.set(action.index, objLockShow) };
-      
+    case 'CHANGE_ANIMATION':{
+      let data = state.list.get(state.currentId);
+      console.log('action.animateData', action.animateData.toJS());
+      data = { ...data, animateData: action.animateData };
+      return { ...state, list: state.list.set(state.currentId, data) };
+    }
     default:
       return state;
   }

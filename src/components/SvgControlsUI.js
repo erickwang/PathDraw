@@ -309,21 +309,37 @@ class SvgControlsUI extends React.Component {
     const {parentRef, zoom} = this.props;
     const offset = utils.toData({x: e.clientX, y: e.clientY}, parentRef, zoom);
     const rect = elem.getBoundingClientRect();
+    let count123 = 0;
 
+    // temp start
+    /*
+    let angle = 0;
+    setInterval(() => {
+      angle += 5;
+      if (angle > 360) angle -= 360;
+
+    }, 100);
+    */
+    // temp end
     const onMove = (x,y) => {
       /*
       let angle = Math.atan2((y - this.box.top) - this.moveBox.y - this.moveBox.height / 2, 
         (e.clientX - this.box.left) - this.moveBox.x - this.moveBox.width / 2); */
       let angle = Math.atan2(y  - rect.top - rect.height / 2, x  - rect.left - rect.width / 2);
+      console.log('x', x, rect.left - rect.width / 2)
       angle = parseInt(angle * 180 / Math.PI);
+      if (angle < 0 ) angle + 360;
       angle += 45;
+      
 
       var newpt = utils.toData({x, y}, parentRef, zoom);
+     
       var elemPt = utils.toData({x: rect.left, y: rect.top}, parentRef, zoom);
       elemPt = Object.assign(elemPt, {width: rect.width/zoom, height: rect.height/zoom });
       let str = `translate(${elemPt.x + elemPt.width / 2},${elemPt.y + elemPt.height / 2}) `;
       str += `rotate(${angle}) `;
       str += `translate(${(elemPt.x + elemPt.width / 2) * -1},${(elemPt.y + elemPt.height / 2) * -1}) `;
+      //console.log('str =', new Date().getTime(), str);
       elem.setAttribute('transform', str);
     }
 
@@ -350,14 +366,14 @@ class SvgControlsUI extends React.Component {
              <line ref = {n => {this.line1 = n}} x1 = '0' y1 = '0' x2 = '0' y2 = '0' strokeDasharray="5, 5" display = "none"/>
              <line ref = {n => {this.line2 = n}} x1 = '0' y1 = '0' x2 = '0' y2 = '0' strokeDasharray="5, 5" display = "none"/>
               <g id = "bboxGroup" ref = {n => {this.bboxGroup = n}} >
-                  <rect id = "bbox" ref = {n => {this.bbox = n}} onMouseDown = {this.moveItem} strokeDasharray="5, 5"  fillOpacity = "0.5" />
+                  <rect id = "bbox" ref = {n => {this.bbox = n}} onMouseDown = {this.moveItem} strokeWidth="1" strokeDasharray="5, 5"  fillOpacity = "0.5" />
                   <path id = "resizer" ref = {n => {this.resizer = n}}  onMouseDown = {this.resizeItem} 
                     d="M 0 0 L 20 0 L 20 20 L 0 20 L 0 0 M 15 5 L 5 15 M 8 5 L 15 5 L 15 12 M 5 8 L 5 15  L 12 15 L 5 15" 
-                    stroke="#ff6666" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill = "white"></path>
+                    stroke="#ff6666" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" fill = "white"></path>
 
                   <path id = "rotator" ref = {n => {this.rotator = n}} onMouseDown = {this.rotateItem}  
                     d="M 0 0 L 20 0 L 20 20 L 0 20 L 0 0 M 5 8 C 1 18 22 20 13 6 C 22 20 1 18 5 8  M 10 9 L 11 4  L 16 5 " 
-                    stroke="#ff6666" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill = "white" ></path>
+                    stroke="#ff6666" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" fill = "white" ></path>
               </g>
           </g> 
     )

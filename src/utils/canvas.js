@@ -6,10 +6,26 @@ export function modify(e, box, bboxGroup, onMove, onUp) {
     if (window.pathdraw.isDrawing === true) {
         return;
     }
-    
+    let lastTime = new Date().getTime();
     let mouseMove = (e) => {
+        const now = new Date().getTime();
+        if (now - lastTime < 200) {
+            //return;
+        }
+
+        lastTime = now;
         onMove(e.clientX, e.clientY);
     }
+
+    const debounce = (func, delay) => {
+        let inDebounce
+        return function() {
+          const context = this
+          const args = arguments
+          clearTimeout(inDebounce)
+          inDebounce = setTimeout(() => func.apply(context, args), delay)
+        }
+      }
 
     const mouseUp = (e) => {
         document.removeEventListener('mousemove', mouseMove);

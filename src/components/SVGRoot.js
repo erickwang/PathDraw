@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
+import anime from 'animejs';
+import {toAnimationObj} from "../utils/animation";
 import SvgControlsUI from './SvgControlsUI';
 import Ruler from './Ruler';
 import { insert, editItem, selectUnit} from '../actions';
@@ -182,6 +183,40 @@ class SVGRoot extends React.Component {
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
+  }
+
+  componentDidUpdate() {
+    console.log('this.props.config.animate', this.props.config.animate);
+    if (this.props.config.animate != -1){
+      const list = this.props.allDraws.list;
+      list.forEach(item => {
+        console.log('item', item);
+        if(!item.animateData) return;
+        var timeline = anime.timeline({loop: true, autoplay: true});
+        const targets = document.querySelector('#'+ item.id);
+        console.log('item.id', item.id, targets);
+        const newObj = toAnimationObj(item.animateData.toJS());
+        console.log(newObj, item.animateData.toJS())
+        timeline.add({
+          duration: 5000,
+          rotate: 40,
+          translateX: 0,
+          translateY: 0,
+          targets,
+          easing: 'easeOutExpo'
+        })
+        /*
+        newObj.forEach(unit => {
+          timeline.add({
+            ...unit,
+            targets,
+            easing: 'easeOutExpo'
+          })
+          console.log('timeline', timeline)
+        })
+        */
+      })
+    }
   }
 
   render(){

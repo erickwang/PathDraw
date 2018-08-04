@@ -14,7 +14,8 @@ const initialState = {
   },
   zoom: 1,
   segSize: 20,
-  smoothCurve: true
+  smoothCurve: true,
+  animate: -1,
 };
 
 export default function config(state = initialState, action) {
@@ -61,6 +62,8 @@ export default function config(state = initialState, action) {
           break;
       }
       return { ...state, zoom };
+    case 'ANIMATE':
+      return { ...state, animate: state.animate === -1 ? 1 : -1 };
     case 'SELECT_UNIT':{
       const obj = { ...state.popups, editor: true };
       return { ...state, popups: obj };
